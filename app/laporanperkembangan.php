@@ -18,4 +18,10 @@ class laporanperkembangan extends Model
         'harike',
     ];
     public $timestamps= false;
+
+    public function getLaporanById($id){
+        return laporanperkembangan::select('laporanperkembangan.*')
+                       ->where('idbeli','=',$id)
+                       ->get();
+   }
 }
