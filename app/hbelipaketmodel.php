@@ -25,31 +25,39 @@ class hbelipaketmodel extends Model
     public $timestamps= false;
 
     public function getTransaksiBelumAktif($user){
-        return hbelipaketmodel::select("hbelipaket.*")
-                            ->where("iduser","=",$user)
-                            ->where("status","=","0")
-                            ->get();
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+                                ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
+                                ->join("member","member.id","=","paket.konsultan")
+                                ->where("hbelipaket.iduser","=",$user)
+                                ->where("hbelipaket.status","=","0")
+                                ->get();
     }
 
     public function onProses($user){
-        return hbelipaketmodel::select("hbelipaket.*")
-                            ->where("iduser","=",$user)
-                            ->where("status","=","1")
-                            ->get();
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+                                ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
+                                ->join("member","member.id","=","paket.konsultan")
+                                ->where("hbelipaket.iduser","=",$user)
+                                ->where("hbelipaket.status","=","1")
+                                ->get();
     }
 
     public function getTransaksiSelesai($user){
-        return hbelipaketmodel::select("hbelipaket.*")
-                            ->where("iduser","=",$user)
-                            ->where("status","=","2")
-                            ->get();
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+                                ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
+                                ->join("member","member.id","=","paket.konsultan")
+                                ->where("hbelipaket.iduser","=",$user)
+                                ->where("hbelipaket.status","=","2")
+                                ->get();
     }
 
     public function getTransaksiBatal($user){
-        return hbelipaketmodel::select("hbelipaket.*")
-                            ->where("iduser","=",$user)
-                            ->where("status","=","3")
-                            ->get();
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+                                ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
+                                ->join("member","member.id","=","paket.konsultan")
+                                ->where("hbelipaket.iduser","=",$user)
+                                ->where("hbelipaket.status","=","3")
+                                ->get();
     }
 
     public function aktivasiPaket($id){
