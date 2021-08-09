@@ -120,6 +120,9 @@ class belipaketcontroller extends Controller
         $model = new dbeliModel();
         $hsl = $model->getDetail($req->id);
         $return[0]['detail'] = $hsl;
+        $model = new laporanperkembangan();
+        $hsl = $model->getLaporanById($req->id);
+        $return[0]['laporan'] = $hsl;
 		echo json_encode($return);
     }
 

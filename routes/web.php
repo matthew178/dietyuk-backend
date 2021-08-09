@@ -59,7 +59,7 @@ Route::post('/checkout', "beliprodukcontroller@checkout");
 Route::post('/getkategori', "kategoricontroller@getallkategori");
 
 //laporanperkembangan
-Route::post('/getlaporanperkembangan', "laporanperkembangancontroller@getlaporan");
+
 
 //admin -> post
 Route::post('/loginadmin', "admincontroller@login");
