@@ -43,6 +43,7 @@ class VerifyCsrfToken extends Middleware
         '/getProdukKategori',
         '/getProdukDetail',
         '/searchProduk',
-        '/checkout'
+        '/checkout',
+        '/tambahPerkembangan'
     ];
 }

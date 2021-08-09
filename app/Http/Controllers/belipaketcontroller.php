@@ -70,7 +70,7 @@ class belipaketcontroller extends Controller
         $lap->username = $req->username;
         $lap->berat = $req->berat;
         $lap->status = 0;
-        $lap->harike = 1;
+        $lap->harike = 0;
         $lap->save();
         for ($i=0; $i < count($paket); $i++) {
             $hariini = Carbon::now();
