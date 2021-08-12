@@ -54,11 +54,13 @@ class produkcontroller extends Controller
     public function cariProduk(Request $req){
         if($req->cari != ""){
             $model = new ProdukModel();
-            $hsl = $model->searchProduk($req->cari);
+            $hsl = $model->searchProduk($req->cari,$req->id);
             $return[0]['produk'] = $hsl;
         }
         else{
-            $return[0]['produk'] = ProdukModel::all();
+            $model = new ProdukModel();
+            $hsl = $model->getProdukByKategori($req->id);
+            $return[0]['produk'] = $hsl;
         }
         echo json_encode($return);
 
