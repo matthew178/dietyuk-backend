@@ -6,6 +6,7 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <title>Admin</title>
 </head>
 
@@ -26,9 +27,8 @@
                                     <tr>
                                         <th>Username</th>
                                         <th>Nama</th>
-                                        <th>Jenis Kelamin</th>
+                                        {{-- <th>Jenis Kelamin</th> --}}
                                         <th>Nomor HP</th>
-                                        {{-- <th>Tanggal Lahir</th> --}}
                                         <th>Role</th>
                                         <th>Saldo</th>
                                         <th>Rating</th>
@@ -47,12 +47,14 @@
                                                 <br>
                                                 <span style="font-size: 13px;">Email : </span><span style="font-size: 13px; color:red;">{{$member[$i]->email}}</span>
                                             </td>
-                                            <td>{{$member[$i]->nama}}</td>
-                                            <td>{{$member[$i]->jeniskelamin}}</td>
+                                            @if ($member[$i]->jeniskelamin == "pria")
+                                                <td>{{$member[$i]->nama}} <i class="fas fa-mars" style="color: blue"></i></td>
+                                            @else
+                                                <td>{{$member[$i]->nama}} <i class="fas fa-venus" style="color: hotpink"></i></td>
+                                            @endif
                                             <td>{{$member[$i]->nomorhp}}</td>
-                                            {{-- <td>{{$member[$i]->tanggallahir}}</td> --}}
                                             <td>{{$member[$i]->role}}</td>
-                                            <td>{{"Rp.".$member[$i]->saldo}}</td>
+                                            <td>Rp {{number_format($member[$i]->saldo,2,',','.')}}</td>
                                             <td>{{$member[$i]->rating}} <span><img src="{{asset('bfull.png')}}" style="height: 20px; width:20px;"></span></td>
                                             @if ($member[$i]->status == "Aktif")
                                                 <td style="color: green">{{$member[$i]->status}}</td>

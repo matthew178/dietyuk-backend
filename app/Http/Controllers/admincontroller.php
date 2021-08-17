@@ -7,6 +7,7 @@ use App\KategoriModel;
 use App\JenisPaketModel;
 use App\MemberModel;
 use App\PaketModel;
+use App\SaldoModel;
 
 class admincontroller extends Controller
 {
@@ -90,7 +91,9 @@ class admincontroller extends Controller
     }
 
     public function confirmsaldo(){
-        return view("confirmsaldo");
+        $model = new SaldoModel();
+        $saldo = $model->getSaldoBelumConfirm();
+        return view("confirmsaldo",["saldo" => $saldo]);
     }
 
     public function mastermember(){
@@ -131,6 +134,13 @@ class admincontroller extends Controller
         $model = new MemberModel();
         $member = $model->getBiodata($username);
         return view("detailkonsultan",["member" => $member]);
+    }
+
+    public function konfirmasisaldo(Request $req){
+        $model = new SaldoModel();
+        $hsl = $model->konfirmasisaldo($req->id);
+        $saldo = $model->getSaldoBelumConfirm();
+        return view("confirmsaldo",["saldo" => $saldo]);
     }
 
     public function terimakonsultan(Request $req){

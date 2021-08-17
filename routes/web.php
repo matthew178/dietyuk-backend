@@ -61,6 +61,10 @@ Route::post('/getkategori', "kategoricontroller@getallkategori");
 //laporanperkembangan
 Route::post('/tambahPerkembangan', "laporanperkembangancontroller@tambahPerkembangan");
 
+//saldo
+Route::post('/topup', "saldocontroller@topup");
+Route::post('/updatebukti',"saldocontroller@updatebukti");
+
 //admin -> post
 Route::post('/loginadmin', "admincontroller@login");
 Route::post('/tambahjenisproduk',"admincontroller@tambahjenisproduk");
@@ -70,6 +74,7 @@ Route::post('/searchMember',"admincontroller@searchMember");
 Route::post('/detail/{username}',"admincontroller@detail");
 Route::post('/terima',"admincontroller@terimakonsultan");
 Route::post('/tolak',"admincontroller@tolakkonsultan");
+Route::post('/konfirmasisaldo', "admincontroller@konfirmasisaldo");
 
 //admin -> get
 Route::get('/admin', function () {
