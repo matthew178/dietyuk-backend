@@ -42,7 +42,7 @@ class dbeliModel extends Model
     }
 
     public function getHari($id){
-        return dbeliModel::select("dbelipaket.hari")
+        return dbeliModel::select("dbelipaket.hari","dbelipaket.tanggal")
                         ->where("idbeli","=",$id)
                         ->distinct()
                         ->get();

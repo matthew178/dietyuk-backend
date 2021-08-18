@@ -64,6 +64,7 @@ class belipaketcontroller extends Controller
 		$return = [];
 		$return[0]['jadwal'] = $paket;
         $temp = 0;
+        $hariini = Carbon::now();
         $lap = new laporanperkembangan();
         $lap->id = 0;
         $lap->idbeli = $req->id;
@@ -71,6 +72,7 @@ class belipaketcontroller extends Controller
         $lap->berat = $req->berat;
         $lap->status = 0;
         $lap->harike = 0;
+        $lap->tanggal = $hariini->addDays(1);
         $lap->save();
         for ($i=0; $i < count($paket); $i++) {
             $hariini = Carbon::now();
@@ -99,6 +101,7 @@ class belipaketcontroller extends Controller
         $laporan = new dbeliModel();
         $hsl = $laporan->getHari($req->id);
         for($i = 0;$i<count($hsl);$i++){
+            $hariini = Carbon::now();
             if($hsl[$i]->hari % 3 == 0){
                 $laporan = new laporanperkembangan();
                 $laporan->id = 0;
@@ -107,6 +110,7 @@ class belipaketcontroller extends Controller
                 $laporan->berat = 0;
                 $laporan->status = 0;
                 $laporan->harike = $hsl[$i]->hari;
+                $laporan->tanggal = $hsl[$i]->tanggal;
                 $laporan->save();
             }
         }

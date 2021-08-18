@@ -16,6 +16,7 @@ class laporanperkembangan extends Model
 		'berat',
 		'status',
         'harike',
+        'tanggal'
     ];
     public $timestamps= false;
 
