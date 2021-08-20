@@ -61,6 +61,11 @@ Route::post('/getkategori', "kategoricontroller@getallkategori");
 //laporanperkembangan
 Route::post('/tambahPerkembangan', "laporanperkembangancontroller@tambahPerkembangan");
 
+//kota&ongkir
+Route::get('/getKota',"usercontroller@getKota");
+Route::get('/getProvinsi',"usercontroller@getProvinsi");
+Route::post('/hitungOngkir',"usercontroller@hitungOngkir");
+
 //saldo
 Route::post('/topup', "saldocontroller@topup");
 Route::post('/updatebukti',"saldocontroller@updatebukti");
