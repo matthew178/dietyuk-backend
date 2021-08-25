@@ -10,6 +10,7 @@ class laporanperkembangancontroller extends Controller
 {
     public function tambahPerkembangan(Request $req){
         $laporan = laporanperkembangan::find($req->id);
+
         if($req->harike == "0"){
             $laporan->berat = $req->berat;
             $laporan->status = 3;
@@ -32,6 +33,28 @@ class laporanperkembangancontroller extends Controller
                 echo "2";
             }
             $laporan->save();
+        }
+        $report = laporanperkembangan::where('idbeli', '=', $req->idbeli)
+								->orderby('id')
+								->get();
+        $oldberat = 0;
+        foreach($report as $row) {
+            // utk ganti status
+            $status = 0;
+            if($row->berat > 0) {
+                if($row->harike == 0) { $status = 3; $oldberat = $row->berat; }
+                else {
+                    if($row->berat > $oldberat) { $status = 2; }
+                    else if($row->berat < $oldberat) { $status = 1;}
+                    else { $status = 3; }
+
+                    $oldberat = $row->berat;
+                }
+
+                $lapupdate = laporanperkembangan::find($row->id);
+                $lapupdate->status = $status;
+                $lapupdate->save();
+            }
         }
         $member = MemberModel::find($req->user);
         $member->berat = $req->berat;

@@ -12,7 +12,8 @@ class JenisPaketModel extends Model
     protected $fillable= [
         'idjenispaket',
         'namajenispaket',
-        'deskripsijenis'
+        'deskripsijenis',
+        'background'
     ];
     public $timestamps= false;
 }

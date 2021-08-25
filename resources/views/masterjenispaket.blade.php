@@ -46,7 +46,8 @@
                             <label for="namajenis">Nama Jenis Paket</label>
                             <input type="text" class="form-control" name="namajenis" id="namajenis"><br>
                             <label for="deskripsi">Deskripsi Jenis Paket</label>
-                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea><br><br>
+                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea><br>
+                            Background : <input type="file" class="" name="background" id="background"><br><br>
                             <input type="submit" class="btn btn-primary" value="Tambah">
                         </form>
                     </div>

@@ -80,6 +80,7 @@ class admincontroller extends Controller
         $jenisBaru->idjenispaket = $kode;
         $jenisBaru->namajenispaket = $nama;
         $jenisBaru->deskripsijenis = $req->deskripsi;
+        $jenisBaru->background = "";
         $jenisBaru->save();
         return redirect("/jenispaket");
     }
