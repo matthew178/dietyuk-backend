@@ -28,6 +28,12 @@ class dbeliModel extends Model
                             ->get();
     }
 
+    public function detailbyid($id){
+        return dbeliModel::select("dbelipaket.*")
+                            ->where("idbeli","=",$id)
+                            ->get();
+    }
+
     public function getJadwalHarian($id, $hari){
         return dbeliModel::select("dbelipaket.*")
                             ->where("idbeli","=",$id)

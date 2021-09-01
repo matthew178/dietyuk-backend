@@ -44,6 +44,20 @@ class belipaketcontroller extends Controller
 		echo json_encode($return);
     }
 
+    public function paketBeliKonsultan(Request $req){
+        $model = new hbelipaketmodel();
+        $hsl = $model->getBeliKonsultan($req->user);
+		$return[0]['transaksi'] = $hsl;
+		echo json_encode($return);
+    }
+
+    public function paketSelesaiKonsultan(Request $req){
+        $model = new hbelipaketmodel();
+        $hsl = $model->getSelesaiKonsultan($req->user);
+		$return[0]['transaksi'] = $hsl;
+		echo json_encode($return);
+    }
+
     public function getPaketSelesai(Request $req){
         $model = new hbelipaketmodel();
         $hsl = $model->getTransaksiSelesai($req->user);

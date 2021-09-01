@@ -25,8 +25,9 @@ class PaketModel extends Model
     public $timestamps= false;
 
 	public function getPaket(){
-        return PaketModel::select('paket.*', "member.nama")
+        return PaketModel::select('paket.*', "member.nama","jenispaket.background")
                         ->join('member','member.id',"=","paket.konsultan")
+                        ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
                         ->get();
     }
 
@@ -37,7 +38,8 @@ class PaketModel extends Model
     }
 
 	public function getPaketById($id){
-        return PaketModel::select('paket.*')
+        return PaketModel::select('paket.*','jenispaket.background')
+                        ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
 						->where('id_paket','=',$id)
                         ->get();
     }

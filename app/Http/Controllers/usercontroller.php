@@ -103,11 +103,12 @@ class usercontroller extends Controller
 		$nohp = $req->nomorhp;
 		$berat = $req->berat;
 		$tinggi = $req->tinggi;
-		$namafile = $req->m_filename;
-        if($req->m_filename != ""){
-            $datagambar = base64_decode($req->m_image);
-            file_put_contents("gambar/".$namafile, $datagambar);
-        }
+        $namafile = $req->m_filename;
+		// $namafile = $req->m_filename;
+        // if($req->m_filename != ""){
+        //     $datagambar = base64_decode($req->m_image);
+        //     file_put_contents("gambar/".$namafile, $datagambar);
+        // }
 		$model->updateMember($id, $nama, $username, $email, $nohp, $berat, $tinggi, $namafile);
 	}
 
@@ -135,10 +136,10 @@ class usercontroller extends Controller
         echo $response;
     }
 
-    public function getKota(){
+    public function getKota(Request $req){
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.rajaongkir.com/starter/city",
+        CURLOPT_URL => "https://api.rajaongkir.com/starter/city?province=".$req->province,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,

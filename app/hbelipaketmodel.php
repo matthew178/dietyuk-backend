@@ -33,6 +33,24 @@ class hbelipaketmodel extends Model
                                 ->get();
     }
 
+    public function getBeliKonsultan($user){
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+                                ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
+                                ->join("member","member.id","=","hbelipaket.iduser")
+                                ->where("paket.konsultan","=",$user)
+                                ->where("hbelipaket.status","=","1")
+                                ->get();
+    }
+
+    public function getSelesaiKonsultan($user){
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+                                ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
+                                ->join("member","member.id","=","hbelipaket.iduser")
+                                ->where("paket.konsultan","=",$user)
+                                ->where("hbelipaket.status","=","2")
+                                ->get();
+    }
+
     public function onProses($user){
         return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
                                 ->join("paket","paket.id_paket","=","hbelipaket.idpaket")

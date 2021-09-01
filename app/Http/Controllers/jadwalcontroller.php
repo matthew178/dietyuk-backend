@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\dbeliModel;
 use Illuminate\Http\Request;
 use App\JadwalModel;
 
@@ -10,6 +11,14 @@ class jadwalcontroller extends Controller
     public function getJadwalById(Request $req){
 		$model = new JadwalModel();
 		$paket = $model->getJadwalById($req->id);
+		$return = [];
+		$return[0]['jadwal'] = $paket;
+		echo json_encode($return);
+	}
+
+    public function getdetailbyid(Request $req){
+		$model = new dbeliModel();
+		$paket = $model->detailbyid($req->id);
 		$return = [];
 		$return[0]['jadwal'] = $paket;
 		echo json_encode($return);

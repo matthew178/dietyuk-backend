@@ -29,10 +29,12 @@ class SaldoModel extends Model
 
     public function konfirmasisaldo($id){
         $saldo = SaldoModel::find($id);
-        $saldo->status = 1;
-        $saldo->save();
-        $member = MemberModel::find($saldo->id_user);
-        $member->saldo = $member->saldo + $saldo->saldo;
-        $member->save();
+        if($saldo->status == 0){
+            $saldo->status = 1;
+            $saldo->save();
+            $member = MemberModel::find($saldo->id_user);
+            $member->saldo = $member->saldo + $saldo->saldo;
+            $member->save();
+        }
     }
 }

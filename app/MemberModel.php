@@ -25,8 +25,7 @@ class MemberModel extends Model
 		'rating',
 		'status',
 		'foto',
-        'waktudaftar',
-        'fotoktp'
+        'waktudaftar'
     ];
     public $timestamps= false;
 
@@ -46,27 +45,26 @@ class MemberModel extends Model
     }
 
 	public function updateMember($id, $nama, $username, $email, $nohp, $berat, $tinggi, $file){
+        $member = MemberModel::find($id);
+        $member->nama = $nama;
+        $member->email = $email;
+        $member->username = $username;
+        $member->nomorhp = $nohp;
+        $member->tinggi = $tinggi;
+        if(intval($member->berat) != intval($berat)){
+            $tracking = new TrackingBeratModel();
+            $tracking->username = $id;
+            $tracking->tanggal = NOW();
+            $tracking->berat = $berat;
+            $tracking->save();
+            echo "masuk";
+        }
+        $member->berat = $berat;
         if($file != ""){
-            $member = MemberModel::find($id);
-            $member->nama = $nama;
-            $member->email = $email;
-            $member->username = $username;
-            $member->nomorhp = $nohp;
-            $member->berat = $berat;
-            $member->tinggi = $tinggi;
             $member->foto = $file;
-            $member->save();
         }
-        else{
-            $member = MemberModel::find($id);
-            $member->nama = $nama;
-            $member->email = $email;
-            $member->username = $username;
-            $member->nomorhp = $nohp;
-            $member->berat = $berat;
-            $member->tinggi = $tinggi;
-            $member->save();
-        }
+        echo "sampe sini";
+        $member->save();
     }
 
     public function searchMember($cari){

@@ -29,11 +29,13 @@ Route::post('/updatepaket',"paketcontroller@updatepaket");
 Route::post('/getpaket',"paketcontroller@getPaket");
 Route::post('/getpaketkonsultan',"paketcontroller@getPaketkonsultan");
 Route::post('/getpaketbyid',"paketcontroller@getPaketById");
+Route::get('/getjenispaketmember',"paketcontroller@getjenispaket");
 
 //jadwal
 Route::post('/getjadwalbyid',"jadwalcontroller@getJadwalById");
 Route::post('/tambahjadwal',"jadwalcontroller@tambahjadwal");
 Route::post('/hapusjadwal',"jadwalcontroller@hapusjadwal");
+Route::post('/getdetailbyid', "jadwalcontroller@getdetailbyid");
 
 //produk
 Route::post('/getprodukbykonsultan', "produkcontroller@getprodukkonsultan");
@@ -51,6 +53,8 @@ Route::post('/aktivasiPaket', "belipaketcontroller@aktivasiPaket");
 Route::post('/getdetailbeli',"belipaketcontroller@getDetailBeli");
 Route::post('/getJadwalHarian',"belipaketcontroller@getJadwalHarian");
 Route::post('/ubahStatusJadwal', "belipaketcontroller@ubahstatus");
+Route::post('/getPaketBeliKonsultan', "belipaketcontroller@paketBeliKonsultan");
+Route::post('/getPaketSelesaiKonsultan', "belipaketcontroller@paketSelesaiKonsultan");
 
 //beliproduk
 Route::post('/checkout', "beliprodukcontroller@checkout");

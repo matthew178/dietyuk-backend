@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\JenisPaketModel;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -49,6 +50,11 @@ class paketcontroller extends Controller
 		$return[0]['paket'] = $paket;
 		echo json_encode($return);
 	}
+
+    public function getJenisPaket(){
+        $return[0]['jenis'] = JenisPaketModel::all();
+        echo json_encode($return);
+    }
 
 	public function updatePaket(Request $req){
 		$model = new PaketModel();
