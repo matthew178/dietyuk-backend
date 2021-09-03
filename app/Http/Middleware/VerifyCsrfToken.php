@@ -49,6 +49,7 @@ class VerifyCsrfToken extends Middleware
         '/hitungOngkir',
         '/getPaketBeliKonsultan',
         '/getPaketSelesaiKonsultan',
-        '/getdetailbyid'
+        '/getdetailbyid',
+        '/tambahproduk'
     ];
 }

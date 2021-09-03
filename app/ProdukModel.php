@@ -18,7 +18,8 @@ class ProdukModel extends Model
         'harga',
         'foto',
         'deskripsi',
-        'status'
+        'status',
+        'berat'
     ];
     public $timestamps= false;
 

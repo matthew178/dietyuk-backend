@@ -1,13 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use App\MemberModel;
+use Mail;
 
 class usercontroller extends Controller
 {
@@ -104,11 +103,10 @@ class usercontroller extends Controller
 		$berat = $req->berat;
 		$tinggi = $req->tinggi;
         $namafile = $req->m_filename;
-		// $namafile = $req->m_filename;
-        // if($req->m_filename != ""){
-        //     $datagambar = base64_decode($req->m_image);
-        //     file_put_contents("gambar/".$namafile, $datagambar);
-        // }
+        if($req->m_filename != ""){
+            $datagambar = base64_decode($req->m_image);
+            file_put_contents("gambar/".$namafile, $datagambar);
+        }
 		$model->updateMember($id, $nama, $username, $email, $nohp, $berat, $tinggi, $namafile);
 	}
 

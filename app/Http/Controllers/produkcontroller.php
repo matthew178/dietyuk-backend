@@ -8,16 +8,34 @@ use App\ProdukModel;
 class produkcontroller extends Controller
 {
     public function tambahproduk(Request $req){
-		$produkBaru = new ProdukModel;
-		$produkBaru->kodeproduk = 0;
-		$produkBaru->konsultan = $req->nama;
-		$produkBaru->namaproduk = $req->desc;
-		$produkBaru->kodekategori = $req->estimasi;
-		$produkBaru->kemasan = $req->harga;
-		$produkBaru->harga = $req->durasi;
-		$produkBaru->foto = 1;
-		$produkBaru->deskripsi = 0;
-		$produkBaru->status = $req->konsultan;
+        $kode = "PR";
+        $produksemua = ProdukModel::all();
+        $jum = count($produksemua)+1;
+        if($jum < 10){
+            $kode = $kode."00".$jum;
+        }
+        else if($jum > 10 && $jum < 100){
+            $kode = $kode."0".$jum;
+        }
+        else{
+            $kode = $kode.$jum;
+        }
+		$produkBaru = new ProdukModel();
+		$produkBaru->kodeproduk = $kode;
+		$produkBaru->konsultan = $req->konsultan;
+		$produkBaru->namaproduk = $req->nama;
+		$produkBaru->kodekategori = $req->kategori;
+		$produkBaru->kemasan = $req->kemasan;
+		$produkBaru->harga = $req->harga;
+        $produkBaru->berat = $req->berat;
+		$produkBaru->foto = $req->m_filename;
+        if($req->m_filename != "default.png"){
+            $datagambar = base64_decode($req->m_image);
+            file_put_contents("gambar/produk/".$req->m_filename, $datagambar);
+        }
+		$produkBaru->deskripsi = $req->deskripsi;
+		$produkBaru->status = "aktif";
+        $produkBaru->varian = $req->varian;
 		$produkBaru->save();
 		$return[0]['status'] = "sukses";
 		echo json_encode($return);

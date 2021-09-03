@@ -127,6 +127,17 @@ class belipaketcontroller extends Controller
                 $laporan->tanggal = $hsl[$i]->tanggal;
                 $laporan->save();
             }
+            if($i == count($hsl)){
+                $lprn = new laporanperkembangan();
+                $lprn->id = 0;
+                $lprn->idbeli = $req->id;
+                $lprn->username = $req->username;
+                $lprn->berat = 0;
+                $lprn->status = 0;
+                $lprn->harike = 0;
+                $lprn->tanggal = $hariini->addDays(count($hsl));
+                $lprn->save();
+            }
         }
         $model = new hbelipaketmodel();
         $temp = $model->aktivasiPaket($req->id);
