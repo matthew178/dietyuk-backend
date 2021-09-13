@@ -15,14 +15,14 @@ class Controller extends BaseController
 
     public function index(Request $req)
     {
-        $data['message'] = "contoh";
-        Mail::send('contoh', ['data'=> $data],
-            function($message) use ($req)
-            {
-                $message->subject("Test");
-                $message->from("hendrymatthew97@gmail.com","hendrymatthew97@gmail.com");
-                $message->to("mhendry106@gmail.com");
-            }
-        );
+        // $data['message'] = "contoh";
+        // Mail::send('contoh', ['data'=> $data],
+        //     function($message) use ($req)
+        //     {
+        //         $message->subject("Test");
+        //         $message->from("hendrymatthew97@gmail.com","hendrymatthew97@gmail.com");
+        //         $message->to("mhendry106@gmail.com");
+        //     }
+        // );
     }
 }
