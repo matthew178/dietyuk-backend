@@ -26,4 +26,11 @@ class JadwalModel extends Model
                         ->get();
     }
 
+    public function cekJadwal($id){
+        return JadwalModel::select('hari')
+                        ->where('id_paket','=',$id)
+                        ->distinct()
+                        ->get();
+    }
+
 }

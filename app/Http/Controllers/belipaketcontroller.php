@@ -37,6 +37,27 @@ class belipaketcontroller extends Controller
 		echo json_encode($return);
     }
 
+    public function refundPaket(Request $req){
+        if($req->mode == 1){
+            //konsultan diblokir
+            $model = hbelipaketmodel::find($req->id);
+            $user = MemberModel::find($req->username);
+            $user->saldo = $user->saldo + $model->totalharga;
+            $user->save();
+            $model->status = 4;
+            $model->save();
+        }
+        else{
+            //batal beli paket
+            $model = hbelipaketmodel::find($req->id);
+            $user = MemberModel::find($req->username);
+            $user->saldo = $user->saldo + $model->totalharga;
+            $user->save();
+            $model->status = 3;
+            $model->save();
+        }
+    }
+
     public function onProsesPaket(Request $req){
         $model = new hbelipaketmodel();
         $hsl = $model->onProses($req->user);
@@ -77,7 +98,7 @@ class belipaketcontroller extends Controller
 		$paket = $model->getJadwalById($req->paket);
 		$return = [];
 		$return[0]['jadwal'] = $paket;
-        $temp = 0;
+        $temp = 1;
         $hariini = Carbon::now();
         $lap = new laporanperkembangan();
         $lap->id = 0;
@@ -86,7 +107,7 @@ class belipaketcontroller extends Controller
         $lap->berat = $req->berat;
         $lap->status = 0;
         $lap->harike = 0;
-        $lap->tanggal = $hariini->addDays(1);
+        $lap->tanggal = $hariini;
         $lap->save();
         for ($i=0; $i < count($paket); $i++) {
             $hariini = Carbon::now();
@@ -103,7 +124,7 @@ class belipaketcontroller extends Controller
                 }
             }
             else{
-                $detail->tanggal = $hariini->addDays($i);
+                $detail->tanggal = $hariini->addDays(1);
             }
             $detail->hari = $paket[$i]->hari;
             $detail->waktu = $paket[$i]->waktu;

@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use App\MemberModel;
 use App\PaketModel;
+use App\JadwalModel;
 
 class paketcontroller extends Controller
 {
@@ -21,7 +22,7 @@ class paketcontroller extends Controller
 		$paketBaru->estimasiturun = $req->estimasi;
 		$paketBaru->harga = $req->harga;
 		$paketBaru->durasi = $req->durasi;
-		$paketBaru->status = 1;
+		$paketBaru->status = 0;
 		$paketBaru->rating = 0;
 		$paketBaru->konsultan = $req->konsultan;
 		$paketBaru->waktutambah = NOW();
@@ -29,6 +30,26 @@ class paketcontroller extends Controller
 		$return[0]['status'] = "sukses";
 		echo json_encode($return);
     }
+
+	public function aktifkanPaket(Request $req){
+		$paket = PaketModel::find($req->id);
+		$model = new JadwalModel();
+		$hsl = $model->cekJadwal($req->id);
+		if($paket->status < 2){
+			if($paket->durasi == count($hsl)){
+				$paket->status = 1;
+				$paket->save();
+			}
+			else{
+				$paket->status = 0;
+				$paket->save();
+			}
+		}
+		else{
+			$paket->status = 2;
+			$paket->save();
+		}
+	}
 
 	public function getPaket(Request $req){
 		$model = new PaketModel;

@@ -50,6 +50,13 @@ class VerifyCsrfToken extends Middleware
         '/getPaketBeliKonsultan',
         '/getPaketSelesaiKonsultan',
         '/getdetailbyid',
-        '/tambahproduk'
+        '/tambahproduk',
+        '/aktifkanPaket',
+        '/kirim-email-verifikasi',
+        '/resetPassword',
+        '/refundPaket',
+        '/getKotaByProvinsi',
+        '/getKotaAwal',
+        '/getProvinsiAwal'
     ];
 }

@@ -39,7 +39,6 @@ class laporanperkembangancontroller extends Controller
 								->get();
         $oldberat = 0;
         foreach($report as $row) {
-            // utk ganti status
             $status = 0;
             if($row->berat > 0) {
                 if($row->harike == 0) { $status = 3; $oldberat = $row->berat; }

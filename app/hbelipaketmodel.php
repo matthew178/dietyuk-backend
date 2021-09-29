@@ -25,7 +25,7 @@ class hbelipaketmodel extends Model
     public $timestamps= false;
 
     public function getTransaksiBelumAktif($user){
-        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama","member.status as statuskonsultan")
                                 ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
                                 ->join("member","member.id","=","paket.konsultan")
                                 ->where("hbelipaket.iduser","=",$user)
@@ -34,7 +34,7 @@ class hbelipaketmodel extends Model
     }
 
     public function getBeliKonsultan($user){
-        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama","member.status as statuskonsultan")
                                 ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
                                 ->join("member","member.id","=","hbelipaket.iduser")
                                 ->where("paket.konsultan","=",$user)
@@ -43,7 +43,7 @@ class hbelipaketmodel extends Model
     }
 
     public function getSelesaiKonsultan($user){
-        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama","member.status as statuskonsultan")
                                 ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
                                 ->join("member","member.id","=","hbelipaket.iduser")
                                 ->where("paket.konsultan","=",$user)
@@ -52,7 +52,7 @@ class hbelipaketmodel extends Model
     }
 
     public function onProses($user){
-        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama","member.status as statuskonsultan")
                                 ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
                                 ->join("member","member.id","=","paket.konsultan")
                                 ->where("hbelipaket.iduser","=",$user)
@@ -61,7 +61,7 @@ class hbelipaketmodel extends Model
     }
 
     public function getTransaksiSelesai($user){
-        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama", "member.status as statuskonsultan")
                                 ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
                                 ->join("member","member.id","=","paket.konsultan")
                                 ->where("hbelipaket.iduser","=",$user)
@@ -70,11 +70,13 @@ class hbelipaketmodel extends Model
     }
 
     public function getTransaksiBatal($user){
-        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama", "member.status as statuskonsultan")
                                 ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
                                 ->join("member","member.id","=","paket.konsultan")
                                 ->where("hbelipaket.iduser","=",$user)
                                 ->where("hbelipaket.status","=","3")
+                                ->orWhere("hbelipaket.iduser","=",$user)
+                                ->where("hbelipaket.status","=","4")
                                 ->get();
     }
 

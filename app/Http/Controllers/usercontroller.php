@@ -5,7 +5,10 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 use App\MemberModel;
+use App\TokenModel;
 use Mail;
 
 class usercontroller extends Controller
@@ -25,7 +28,7 @@ class usercontroller extends Controller
 		else{
 			$memberBaru = new MemberModel;
 			$memberBaru->username = $request->username;
-			$memberBaru->nama = $request->nama;
+			$memberBaru->nama = "";
 			$memberBaru->email = $request->email;
 			$memberBaru->nomorhp = $request->nohp;
 			$memberBaru->password = $request->password;
@@ -33,6 +36,8 @@ class usercontroller extends Controller
 			$memberBaru->rating = 0;
 			$memberBaru->berat = 0;
 			$memberBaru->tinggi = 0;
+            $memberBaru->provinsi = 0;
+            $memberBaru->kota = 0;
             $memberBaru->waktudaftar = NOW();
 			if($request->konsultan == true){
 				$memberBaru->role = "konsultan";
@@ -40,7 +45,16 @@ class usercontroller extends Controller
 			}
 			else{
 				$memberBaru->role = "member";
-				$memberBaru->status = "Aktif";
+				$memberBaru->status = "Pending";
+                $data['email'] = $request->email;
+                Mail::send('konfirmasiakun', ['data'=> $data],
+                    function($message) use ($request)
+                    {
+                        $message->subject("Konfirmasi Akun");
+                        $message->from("hendrymatthew97@gmail.com","hendrymatthew97@gmail.com");
+                        $message->to($request->email);
+                    }
+                );
 			}
 			if($request->jk == "pria"){
 				$memberBaru->jeniskelamin = "pria";
@@ -57,6 +71,45 @@ class usercontroller extends Controller
 		echo json_encode($return);
     }
 
+	public function kirimEmailVerifikasi(Request $req){
+		$kodeotp = Str::random(5);
+		$token = new TokenModel();
+		$token->id = 0;
+		$token->token = $kodeotp;
+		$token->email = $req->email;
+		$token->expire = Carbon::now()->addMinutes(5);
+		$token->save();
+		$data['kodeotp'] = $kodeotp;
+		Mail::send('emailverifikasi', ['data'=> $data],
+			function($message) use ($req)
+			{
+				$message->subject("[KODE VERIFIKASI]");
+				$message->from("hendrymatthew97@gmail.com","hendrymatthew97@gmail.com");
+				$message->to($req->email);
+			}
+		);
+	}
+
+    public function resetPass(Request $req){
+        $return = [];
+        $kodeotp = $req->otp;
+        $pass = $req->pass;
+        $user = $req->email;
+        $model = new TokenModel();
+        $hsl = $model->getToken($kodeotp, $user);
+        if(count($hsl) > 0){
+            $member = new MemberModel();
+            $hasil = $member->memberEmail($user);
+            $hasil[0]->password = $pass;
+            $hasil[0]->save();
+            $return[0]['pesan'] = "sukses";
+        }
+        else{
+            $return[0]['pesan'] = "gagal";
+        }
+        echo json_encode($return);
+    }
+
 	public function login(Request $req){
 		$username = $req->username;
 		$password = $req->password;
@@ -64,12 +117,13 @@ class usercontroller extends Controller
 		$model = new MemberModel();
 		$hsl = $model->loginUser($username, $password);
 		if(count($hsl) > 0){
-			$return[0]['status'] = "sukses";
+			$return[0]['pesan'] = "sukses";
 			$return[0]['id'] = $hsl[0]->id;
+            $return[0]['status'] = $hsl[0]->status;
 			$return[0]['role'] = $hsl[0]->role;
 		}
 		else{
-			$return[0]['status'] = "gagal";
+			$return[0]['pesan'] = "gagal";
 		}
 		echo json_encode($return);
 	}
@@ -103,11 +157,13 @@ class usercontroller extends Controller
 		$berat = $req->berat;
 		$tinggi = $req->tinggi;
         $namafile = $req->m_filename;
+        $kota = $req->city;
+        $provinsi = $req->prov;
         if($req->m_filename != ""){
             $datagambar = base64_decode($req->m_image);
             file_put_contents("gambar/".$namafile, $datagambar);
         }
-		$model->updateMember($id, $nama, $username, $email, $nohp, $berat, $tinggi, $namafile);
+		$model->updateMember($id, $nama, $username, $email, $nohp, $berat, $tinggi, $namafile,$provinsi,$kota);
 	}
 
     public function hitungOngkir(Request $req){

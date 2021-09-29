@@ -25,7 +25,9 @@ class MemberModel extends Model
 		'rating',
 		'status',
 		'foto',
-        'waktudaftar'
+        'waktudaftar',
+        'provinsi',
+        'kota'
     ];
     public $timestamps= false;
 
@@ -44,13 +46,21 @@ class MemberModel extends Model
                         ->get();
     }
 
-	public function updateMember($id, $nama, $username, $email, $nohp, $berat, $tinggi, $file){
+    public function memberEmail($email){
+        return MemberModel::select('member.*')
+                        ->where('email','=',$email)
+                        ->get();
+    }
+
+	public function updateMember($id, $nama, $username, $email, $nohp, $berat, $tinggi, $file,$prov, $city){
         $member = MemberModel::find($id);
         $member->nama = $nama;
         $member->email = $email;
         $member->username = $username;
         $member->nomorhp = $nohp;
         $member->tinggi = $tinggi;
+        $member->kota = $city;
+        $member->provinsi = $prov;
         if(intval($member->berat) != intval($berat)){
             $tracking = new TrackingBeratModel();
             $tracking->username = $id;
