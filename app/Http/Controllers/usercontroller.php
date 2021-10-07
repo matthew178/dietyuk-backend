@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\LiburModel;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -167,6 +169,15 @@ class usercontroller extends Controller
 	}
 
     public function hitungOngkir(Request $req){
+        $arr['jne'] = $this->getOngkirKurir($req->asal,$req->tujuan,$req->berat,"jne");
+        $arr['pos'] = $this->getOngkirKurir($req->asal,$req->tujuan,$req->berat,"pos");
+        $arr['tiki'] = $this->getOngkirKurir($req->asal,$req->tujuan,$req->berat,"tiki");
+
+        echo json_encode($arr);
+    }
+
+    public function getOngkirKurir($asal, $tujuan, $berat, $kurir){
+        $asal = MemberModel::find($asal);
         $curl = curl_init();
         curl_setopt_array($curl, array(
         CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
@@ -176,7 +187,7 @@ class usercontroller extends Controller
         CURLOPT_TIMEOUT => 30,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => "origin=".$req->asal."&destination=".$req->tujuan."&weight=".$req->berat."&courier=".$req->kurir,
+        CURLOPT_POSTFIELDS => "origin=".$asal->kota."&destination=".$tujuan."&weight=".$berat."&courier=".$kurir,
         CURLOPT_HTTPHEADER => array(
         "content-type: application/x-www-form-urlencoded",
         "key: 528375533b45735afc2e5eb260d6502e"
@@ -187,7 +198,33 @@ class usercontroller extends Controller
         $err = curl_error($curl);
         curl_close($curl);
 
-        echo $response;
+        return $response;
+    }
+
+    public function tambahLibur(Request $req){
+        $model = new MemberModel();
+        $hsl = $model->searchTransaksiUntukLibur($req->id,$req->awal,$req->akhir);
+        if(count($hsl) > 0){
+            $return[0]['status'] = "Terdapat jadwal konsultasi dalam periode tanggal tersebut.";
+        }
+        else{
+            $cari = new LiburModel();
+            $hsl = $cari->cariLibur($req->id);
+            if(count($hsl) > 0){
+                $return[0]['status'] = "Konsultan masih memiliki jadwal libur pada tanggal ".$hsl[0]->tanggalawal." sampai dengan tanggal ".$hsl[0]->tanggalakhir;
+            }
+            else{
+                $libur = new LiburModel();
+                $libur->id = 0;
+                $libur->konsultan = $req->id;
+                $libur->tanggalawal = $req->awal;
+                $libur->tanggalakhir = $req->akhir;
+                $libur->status = 0;
+                $libur->save();
+                $return[0]['status'] = "Berhasil tambah libur";
+            }
+        }
+        echo json_encode($return);
     }
 
     public function getKota(Request $req){

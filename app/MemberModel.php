@@ -86,6 +86,24 @@ class MemberModel extends Model
                             ->get();
     }
 
+    public function searchTransaksiUntukLibur($id,$awal,$akhir){
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama")
+                                ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
+                                ->join("member","member.id","=","paket.konsultan")
+                                ->where("paket.konsultan","=",$id)
+                                ->whereBetween('hbelipaket.tanggalaktifasi',[$awal,$akhir])
+                                ->orwhereBetween('hbelipaket.tanggalselesai',[$awal,$akhir])
+                                ->where("paket.konsultan","=",$id)
+                                ->orwhere("paket.konsultan","=",$id)
+                                ->where('hbelipaket.tanggalaktifasi',"<",$awal)
+                                ->where('hbelipaket.tanggalselesai',">",$awal)
+                                ->where("paket.konsultan","=",$id)
+                                ->where('hbelipaket.tanggalaktifasi',"<",$akhir)
+                                ->where('hbelipaket.tanggalselesai',">",$akhir)
+                                ->get();
+
+    }
+
     public function getKonsultan(){
         return MemberModel::select("member.*")
                             ->where("role","=","konsultan")

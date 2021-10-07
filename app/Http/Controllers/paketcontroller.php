@@ -58,6 +58,18 @@ class paketcontroller extends Controller
 		echo json_encode($return);
 	}
 
+    public function searchPaketMember(Request $req){
+        $model = new PaketModel();
+        if($req->cari != ""){
+            $paket = $model->searchPaketMember($req->cari);
+        }
+        else{
+            $paket = $model->getPaket();
+        }
+        $return[0]['paket'] = $paket;
+		echo json_encode($return);
+    }
+
 	public function getPaketkonsultan(Request $req){
 		$model = new PaketModel();
 		$paket = $model->getPaketKonsultan($req->id);

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 use Mail;
 
 class Controller extends BaseController
@@ -25,5 +26,12 @@ class Controller extends BaseController
         //     }
         // );
         echo Str::random(5);
+    }
+
+    public function tes(Request $req){
+        $sekarang = Carbon::createFromFormat('Y-m-d', $req->tanggal);
+        $hari = $req->hari;
+        $sekarang->addDays($hari);
+        echo $sekarang;
     }
 }

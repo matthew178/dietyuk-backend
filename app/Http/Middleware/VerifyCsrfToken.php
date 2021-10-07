@@ -57,6 +57,14 @@ class VerifyCsrfToken extends Middleware
         '/refundPaket',
         '/getKotaByProvinsi',
         '/getKotaAwal',
-        '/getProvinsiAwal'
+        '/getProvinsiAwal',
+        '/kurangSpek',
+        '/tambahSpek',
+        '/tesRouting',
+        '/tambahLibur',
+        '/searchPaketMember',
+        '/getProdukCart',
+        '/tambahAlamat',
+        '/getDaftarAlamat'
     ];
 }

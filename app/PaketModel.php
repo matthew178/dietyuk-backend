@@ -60,6 +60,15 @@ class PaketModel extends Model
                             ->get();
     }
 
+    public function searchPaketMember($cari){
+        return PaketModel::select('paket.*', "member.nama","jenispaket.background")
+                            ->join('member','member.id',"=","paket.konsultan")
+                            ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
+                            ->where("nama_paket","like", "%".strtoupper($cari)."%")
+                            ->orWhere('member.nama',"like", "%".strtoupper($cari)."%")
+                            ->get();
+    }
+
     public function blockPaket($id){
         $paket = PaketModel::find($id);
         $paket->status = 2;

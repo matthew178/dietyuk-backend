@@ -50,6 +50,6 @@ class ProdukModel extends Model
         return ProdukModel::select('produk.*','member.nama as namakonsultan','member.foto as fotokonsultan')
                          ->join('member','member.id',"=","produk.konsultan")
 						->where('kodeproduk','=',$id)
-                        ->get();
+                        ->first();
     }
 }

@@ -24,6 +24,7 @@ Route::post('/getprofile',"usercontroller@getProfile");
 Route::post('/editprofile',"usercontroller@updateProfile");
 Route::post('/kirim-email-verifikasi', "usercontroller@kirimEmailVerifikasi");
 Route::post('/resetPassword', "usercontroller@resetPass");
+Route::post('/tambahLibur',"usercontroller@tambahLibur");
 
 //paket
 Route::post('/tambahpaket',"paketcontroller@tambahpaket");
@@ -33,12 +34,16 @@ Route::post('/getpaketkonsultan',"paketcontroller@getPaketkonsultan");
 Route::post('/getpaketbyid',"paketcontroller@getPaketById");
 Route::get('/getjenispaketmember',"paketcontroller@getjenispaket");
 Route::post('/aktifkanPaket', "paketcontroller@aktifkanPaket");
+Route::post('/searchPaketMember',"paketcontroller@searchPaketMember");
+
 
 //jadwal
 Route::post('/getjadwalbyid',"jadwalcontroller@getJadwalById");
 Route::post('/tambahjadwal',"jadwalcontroller@tambahjadwal");
 Route::post('/hapusjadwal',"jadwalcontroller@hapusjadwal");
 Route::post('/getdetailbyid', "jadwalcontroller@getdetailbyid");
+Route::post('/kurangSpek',"jadwalcontroller@kurangSpek");
+Route::post('/tambahSpek',"jadwalcontroller@tambahSpek");
 
 //produk
 Route::post('/getprodukbykonsultan', "produkcontroller@getprodukkonsultan");
@@ -46,6 +51,8 @@ Route::post('/getProdukKategori',"produkcontroller@getProduk");
 Route::post('/getProdukDetail',"produkcontroller@getProdukDetail");
 Route::post('/searchProduk',"produkcontroller@cariProduk");
 Route::post('/tambahproduk',"produkcontroller@tambahproduk");
+Route::post('/getProdukCart',"produkcontroller@getProdukCart");
+Route::post('/tesRouting',"Controller@tes");
 
 //belipaket
 Route::post('/belipaket', "belipaketcontroller@belipaket");
@@ -65,6 +72,10 @@ Route::get('/kirim-email', 'Controller@index');
 
 //beliproduk
 Route::post('/checkout', "beliprodukcontroller@checkout");
+
+//alamat
+Route::post('/tambahAlamat', "alamatcontroller@tambahAlamat");
+Route::post('/getDaftarAlamat',"alamatcontroller@daftarAlamat");
 
 //kota
 Route::post('/getKotaByProvinsi', "KotaController@getKotaByProvince");

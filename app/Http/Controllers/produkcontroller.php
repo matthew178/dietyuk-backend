@@ -41,6 +41,19 @@ class produkcontroller extends Controller
 		echo json_encode($return);
     }
 
+    public function getProdukCart(Request $req){
+        $data = json_decode($req->data);
+        $arr = [];
+        for ($i=0; $i < count($data); $i++) {
+            $model = new ProdukModel();
+            $produk = $model->getProdukDetail($data[$i]->kodeproduk);
+            $arr[$i] = $produk;
+        }
+        $return = [];
+        $return[0]['produk'] = $arr;
+        echo json_encode($return);
+    }
+
     public function getprodukkonsultan(Request $req){
         $model = new ProdukModel();
         $hsl = $model->getprodukbykonsultan($req->id);
