@@ -37,6 +37,13 @@ class belipaketcontroller extends Controller
 		echo json_encode($return);
     }
 
+    public function getTransaksiPaketKonsultan(Request $req){
+        $model = new hbelipaketmodel();
+        $hsl = $model->getTransaksiPaketKonsultan($req->konsultan);
+        $return[0]['transaksi'] = $hsl;
+		echo json_encode($return);
+    }
+
     public function refundPaket(Request $req){
         if($req->mode == 1){
             //konsultan diblokir

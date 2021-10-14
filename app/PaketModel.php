@@ -12,7 +12,8 @@ class PaketModel extends Model
     public $incrementing = false;
     protected $fillable= [
         'id_paket',
-        'nama',
+        'nama_paket',
+        'jenispaket',
 		'deskripsi',
 		'estimasiturun',
 		'harga',
@@ -20,7 +21,8 @@ class PaketModel extends Model
 		'status',
 		'rating',
 		'konsultan',
-		'waktutambah'
+		'waktutambah',
+        'gambar'
     ];
     public $timestamps= false;
 
@@ -28,11 +30,14 @@ class PaketModel extends Model
         return PaketModel::select('paket.*', "member.nama","jenispaket.background")
                         ->join('member','member.id',"=","paket.konsultan")
                         ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
+                        ->where('paket.status','=',1)
                         ->get();
     }
 
 	public function getPaketKonsultan($id){
-         return PaketModel::select('paket.*')
+         return PaketModel::select('paket.*', "member.nama","jenispaket.background" )
+                        ->join('member','member.id',"=","paket.konsultan")
+                        ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
                         ->where('konsultan','=',$id)
                         ->get();
     }
@@ -65,7 +70,9 @@ class PaketModel extends Model
                             ->join('member','member.id',"=","paket.konsultan")
                             ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
                             ->where("nama_paket","like", "%".strtoupper($cari)."%")
+                            ->where('paket.status','=',1)
                             ->orWhere('member.nama',"like", "%".strtoupper($cari)."%")
+                            ->where('paket.status','=',1)
                             ->get();
     }
 

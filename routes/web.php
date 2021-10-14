@@ -25,6 +25,8 @@ Route::post('/editprofile',"usercontroller@updateProfile");
 Route::post('/kirim-email-verifikasi', "usercontroller@kirimEmailVerifikasi");
 Route::post('/resetPassword', "usercontroller@resetPass");
 Route::post('/tambahLibur',"usercontroller@tambahLibur");
+Route::post('/selesaikanTransaksi',"admincontroller@selesaikanTransaksi");
+Route::post('/konfirmasiakun',"usercontroller@konfirmasiAkun");
 
 //paket
 Route::post('/tambahpaket',"paketcontroller@tambahpaket");
@@ -35,7 +37,6 @@ Route::post('/getpaketbyid',"paketcontroller@getPaketById");
 Route::get('/getjenispaketmember',"paketcontroller@getjenispaket");
 Route::post('/aktifkanPaket', "paketcontroller@aktifkanPaket");
 Route::post('/searchPaketMember',"paketcontroller@searchPaketMember");
-
 
 //jadwal
 Route::post('/getjadwalbyid',"jadwalcontroller@getJadwalById");
@@ -67,11 +68,20 @@ Route::post('/getJadwalHarian',"belipaketcontroller@getJadwalHarian");
 Route::post('/ubahStatusJadwal', "belipaketcontroller@ubahstatus");
 Route::post('/getPaketBeliKonsultan', "belipaketcontroller@paketBeliKonsultan");
 Route::post('/getPaketSelesaiKonsultan', "belipaketcontroller@paketSelesaiKonsultan");
+Route::post('/getTransaksiPaketKonsultan',"belipaketcontroller@getTransaksiPaketKonsultan");
 
 Route::get('/kirim-email', 'Controller@index');
 
 //beliproduk
 Route::post('/checkout', "beliprodukcontroller@checkout");
+Route::post('/getTransaksiProdukKonsultan',"beliprodukcontroller@getTransaksiProdukKonsultan");
+Route::post('/getTransaksiPacking',"beliprodukcontroller@getTransaksiPacking");
+Route::post('/getTransaksiKirim',"beliprodukcontroller@getTransaksiKirim");
+Route::post('/getTransaksiProdukPacking',"beliprodukcontroller@getTransaksiPacking");
+Route::post('/getTransaksiProdukKirim',"beliprodukcontroller@getTransaksiProdukKirim");
+Route::post('/getTransaksiProdukSelesai',"beliprodukcontroller@getTransaksiProdukSelesai");
+Route::post('/getDetailTransProduk',"beliprodukcontroller@getDetailTransProduk");
+Route::post('/tolakTransaksiProduk',"beliprodukcontroller@tolakTransaksi");
 
 //alamat
 Route::post('/tambahAlamat', "alamatcontroller@tambahAlamat");
@@ -97,6 +107,7 @@ Route::post('/getProvinsiAwal', "KotaController@getProvinsiAwal");
 //saldo
 Route::post('/topup', "saldocontroller@topup");
 Route::post('/updatebukti',"saldocontroller@updatebukti");
+Route::post('/getHistoryTopup',"saldocontroller@getHistoryTopup");
 
 //admin -> post
 Route::post('/loginadmin', "admincontroller@login");

@@ -18,4 +18,18 @@ class dbeliproduk extends Model
 		'subtotal'
     ];
     public $timestamps= false;
+
+    public function getDetail($id){
+        return dbeliproduk::select("dbeliproduk.*","produk.namaproduk","produk.varian","produk.foto")
+                          ->join("produk","produk.kodeproduk","=","dbeliproduk.idproduk")
+                          ->where("dbeliproduk.idbeli","=",$id)
+                          ->first();
+    }
+
+    public function countDetail($id){
+        return dbeliproduk::select("dbeliproduk.*","produk.namaproduk","produk.varian","produk.foto")
+                          ->join("produk","produk.kodeproduk","=","dbeliproduk.idproduk")
+                          ->where("dbeliproduk.idbeli","=",$id)
+                          ->get();
+    }
 }

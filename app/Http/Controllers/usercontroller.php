@@ -73,6 +73,13 @@ class usercontroller extends Controller
 		echo json_encode($return);
     }
 
+    public function konfirmasiAkun(Request $req){
+        $model = new MemberModel();
+        $hsl = $model->memberEmail($req->email);
+        $hsl[0]->status = "Aktif";
+        $hsl[0]->save();
+    }
+
 	public function kirimEmailVerifikasi(Request $req){
 		$kodeotp = Str::random(5);
 		$token = new TokenModel();
@@ -146,7 +153,6 @@ class usercontroller extends Controller
 		$return[0]['profile'] = $hsl;
 
 		echo json_encode($return);
-
 	}
 
 	public function updateProfile(Request $req){

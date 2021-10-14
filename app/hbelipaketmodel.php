@@ -80,6 +80,21 @@ class hbelipaketmodel extends Model
                                 ->get();
     }
 
+    public function getAllTransaksiOnGoing(){
+        return hbelipaketmodel::select("hbelipaket.*")
+                                ->where('status','=',1)
+                                ->get();
+    }
+
+    public function getTransaksiPaketKonsultan($id){
+        return hbelipaketmodel::select("hbelipaket.*", "paket.nama_paket", "member.nama", "member.status as statuskonsultan")
+                                ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
+                                ->join("member","member.id","=","paket.konsultan")
+                                ->where("member.id","=",$id)
+                                ->where("hbelipaket.status","=",1)
+                                ->get();
+    }
+
     public function aktivasiPaket($id){
         $paket = hbelipaketmodel::find($id);
         $hariini = Carbon::now();

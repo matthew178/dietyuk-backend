@@ -65,6 +65,16 @@ class VerifyCsrfToken extends Middleware
         '/searchPaketMember',
         '/getProdukCart',
         '/tambahAlamat',
-        '/getDaftarAlamat'
+        '/getDaftarAlamat',
+        '/selesaikanTransaksi',
+        '/getTransaksiPaketKonsultan',
+        '/getTransaksiProdukKonsultan',
+        '/getTransaksiPacking',
+        '/getTransaksiProdukKirim',
+        '/getTransaksiProdukSelesai',
+        '/getDetailTransProduk',
+        '/konfirmasiakun',
+        '/tolakTransaksiProduk',
+        '/getHistoryTopup'
     ];
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\hbelipaketmodel;
 use App\JenisPaketModel;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -11,13 +12,15 @@ use Illuminate\Http\Request;
 use App\MemberModel;
 use App\PaketModel;
 use App\JadwalModel;
+use Carbon\Carbon;
 
 class paketcontroller extends Controller
 {
 	public function tambahpaket(Request $req){
 		$paketBaru = new PaketModel;
 		$paketBaru->id_paket = 0;
-		$paketBaru->nama = $req->nama;
+		$paketBaru->nama_paket = $req->nama;
+        $paketBaru->jenispaket = $req->jenis;
 		$paketBaru->deskripsi = $req->desc;
 		$paketBaru->estimasiturun = $req->estimasi;
 		$paketBaru->harga = $req->harga;
@@ -26,6 +29,7 @@ class paketcontroller extends Controller
 		$paketBaru->rating = 0;
 		$paketBaru->konsultan = $req->konsultan;
 		$paketBaru->waktutambah = NOW();
+        $paketBaru->gambar = "default.jpg";
 		$paketBaru->save();
 		$return[0]['status'] = "sukses";
 		echo json_encode($return);
@@ -51,10 +55,24 @@ class paketcontroller extends Controller
 		}
 	}
 
+    public function selesaikanTransaksi(){
+        $skrg = Carbon::now();
+        $tgl = $skrg->toDateString();
+        $model = new hbelipaketmodel();
+        $hsl = $model->getAllTransaksiOnGoing();
+        for($i = 0; $i < count($hsl); $i++){
+            if($hsl[$i]->tanggalselesai == $tgl){
+                $hsl[$i]->status = 5;
+                $hsl[$i]->save();
+            }
+        }
+    }
+
 	public function getPaket(Request $req){
 		$model = new PaketModel;
 		$paket = $model->getPaket();
 		$return[0]['paket'] = $paket;
+        $this->selesaikanTransaksi();
 		echo json_encode($return);
 	}
 
@@ -74,6 +92,7 @@ class paketcontroller extends Controller
 		$model = new PaketModel();
 		$paket = $model->getPaketKonsultan($req->id);
 		$return[0]['paket'] = $paket;
+        $this->selesaikanTransaksi();
 		echo json_encode($return);
 	}
 

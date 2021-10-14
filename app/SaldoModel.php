@@ -27,6 +27,12 @@ class SaldoModel extends Model
                         ->get();
     }
 
+    public function getHistory($uname){
+        return SaldoModel::select('topup.*')
+                        ->where("topup.id_user","=",$uname)
+                        ->get();
+    }
+
     public function konfirmasisaldo($id){
         $saldo = SaldoModel::find($id);
         if($saldo->status == 0){

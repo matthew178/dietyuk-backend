@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\dbeliModel;
+use App\dbeliproduk;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -29,9 +32,7 @@ class Controller extends BaseController
     }
 
     public function tes(Request $req){
-        $sekarang = Carbon::createFromFormat('Y-m-d', $req->tanggal);
-        $hari = $req->hari;
-        $sekarang->addDays($hari);
-        echo $sekarang;
+        // $coba = $this->generateRandomString(10);
+        // echo $coba;
     }
 }

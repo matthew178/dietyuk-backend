@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\hbelipaketmodel;
 use Illuminate\Http\Request;
 use App\KategoriModel;
 use App\JenisPaketModel;
 use App\MemberModel;
 use App\PaketModel;
 use App\SaldoModel;
+use Carbon\Carbon;
 
 class admincontroller extends Controller
 {
@@ -17,6 +19,7 @@ class admincontroller extends Controller
         $member = new MemberModel();
         $hsl = $member->loginUser($uname,$pass);
         // echo $hsl[0]['jeniskelamin'];
+        $this->selesaikanTransaksi();
         if(count($hsl) > 0){
             if($hsl[0]['role'] == "admin"){
                 return view("dashboard");
@@ -32,11 +35,13 @@ class admincontroller extends Controller
 
     public function jenispaket(){
         $jenis = JenisPaketModel::all();
+        $this->selesaikanTransaksi();
         return view("masterjenispaket",["jenis" => $jenis]);
     }
 
     public function jenisproduk(){
         $model = KategoriModel::all();
+        $this->selesaikanTransaksi();
         return view("masterjenisproduk",["kategori" => $model]);
     }
 
@@ -85,6 +90,19 @@ class admincontroller extends Controller
         return redirect("/jenispaket");
     }
 
+    public function selesaikanTransaksi(){
+        $skrg = Carbon::now();
+        $tgl = $skrg->toDateString();
+        $model = new hbelipaketmodel();
+        $hsl = $model->getAllTransaksiOnGoing();
+        for($i = 0; $i < count($hsl); $i++){
+            if($hsl[$i]->tanggalselesai < $tgl){
+                $hsl[$i]->status = 5;
+                $hsl[$i]->save();
+            }
+        }
+    }
+
     public function confirmkonsultan(){
         $model = new MemberModel();
         $member = $model->getKonsultan();
@@ -98,13 +116,15 @@ class admincontroller extends Controller
     }
 
     public function mastermember(){
+        $this->selesaikanTransaksi();
         return view("mastermember",["member" => MemberModel::all()]);
     }
 
     public function masterpaket(){
         $model = new PaketModel;
 		$paket = $model->getPaket();
-        return view("masterpaket",["paket" => $paket]);
+        $this->selesaikanTransaksi();
+        return view("masterpaket",["paket" => PaketModel::all()]);
     }
 
     public function searchPaket(Request $req){
@@ -178,13 +198,13 @@ class admincontroller extends Controller
         $model = new PaketModel();
         $paket = $model->blockPaket($id);
         $pakets = $model->getPaket();
-        return view("masterpaket",["paket"=>$pakets]);
+        return view("masterpaket",["paket"=>PaketModel::all()]);
     }
 
     public function aktifkanpaket($id){
         $model = new PaketModel();
         $paket = $model->aktifkanPaket($id);
         $pakets = $model->getPaket();
-        return view("masterpaket",["paket"=>$pakets]);
+        return view("masterpaket",["paket"=>PaketModel::all()]);
     }
 }

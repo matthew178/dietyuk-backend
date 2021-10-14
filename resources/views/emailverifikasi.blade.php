@@ -34,7 +34,7 @@
                 <td style="padding:10px;font-size:14px; width:100%;">
                     <p>Berikut adalah Kode OTP anda :</p>
                     <center><p><h3><b><u>{{$data['kodeotp']}}</u></b></h3></p></center><br>
-                    <p>Segera ketik kode tersebut di aplikasi "<b>Dietyuk!</b>"" dan akan otomatis kadaluarsa dalam 5 menit jika tidak digunakan.</p><br>
+                    <p>Segera gunakan kode tersebut di aplikasi "<b>Dietyuk!</b>"". OTP akan otomatis kadaluarsa dalam 5 menit jika tidak digunakan.</p><br>
                     <br><br>
                     <p>Salam, <br>
                     <b>Tim Dietyuk!</b><br>

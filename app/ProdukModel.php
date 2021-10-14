@@ -39,9 +39,9 @@ class ProdukModel extends Model
     public function searchProduk($cari,$id){
         return ProdukModel::select('produk.*','member.nama as namakonsultan','member.foto as fotokonsultan')
                          ->join('member','member.id',"=","produk.konsultan")
-						->where('namaproduk','=',$cari)
+                        ->Where("namaproduk",'like','%'.$cari.'%')
                         ->where('kodekategori','=',$id)
-                        ->orWhere('varian','=',$cari)
+                        ->orWhere("varian",'like','%'.$cari.'%')
                         ->where('kodekategori','=',$id)
                         ->get();
     }

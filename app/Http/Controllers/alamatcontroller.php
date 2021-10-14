@@ -14,6 +14,8 @@ class alamatcontroller extends Controller
         $alamat->provinsi = $req->provinsi;
         $alamat->kota = $req->kota;
         $alamat->alamat_detail = $req->detail;
+        $alamat->penerima = $req->penerima;
+        $alamat->nomortelepon = $req->nohp;
         $alamat->save();
         $return = [];
         $return[0]['status'] = "Berhasil tambah alamat";

@@ -89,9 +89,15 @@ class produkcontroller extends Controller
             $return[0]['produk'] = $hsl;
         }
         else{
-            $model = new ProdukModel();
-            $hsl = $model->getProdukByKategori($req->id);
-            $return[0]['produk'] = $hsl;
+            if($req->id != "all"){
+                $model = new ProdukModel();
+                $hsl = $model->getProdukByKategori($req->id);
+                $return[0]['produk'] = $hsl;
+            }
+            else{
+                $return[0]['produk'] = ProdukModel::all();
+            }
+
         }
         echo json_encode($return);
 
