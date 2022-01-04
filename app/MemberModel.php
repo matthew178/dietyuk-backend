@@ -27,7 +27,8 @@ class MemberModel extends Model
 		'foto',
         'waktudaftar',
         'provinsi',
-        'kota'
+        'kota',
+        'fbkey'
     ];
     public $timestamps= false;
 

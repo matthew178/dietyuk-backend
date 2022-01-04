@@ -31,8 +31,9 @@ class Controller extends BaseController
         echo Str::random(5);
     }
 
-    public function tes(Request $req){
-        // $coba = $this->generateRandomString(10);
-        // echo $coba;
+    function tes(Request $req) {
+
     }
+
+
 }

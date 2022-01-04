@@ -7,6 +7,7 @@ use App\hbelipaketmodel;
 use App\JadwalModel;
 use App\laporanperkembangan;
 use App\MemberModel;
+use App\RatingPaketKonsultanModel;
 use Illuminate\Http\Request;
 
 class belipaketcontroller extends Controller
@@ -91,6 +92,19 @@ class belipaketcontroller extends Controller
         $hsl = $model->getTransaksiSelesai($req->user);
 		$return[0]['transaksi'] = $hsl;
 		echo json_encode($return);
+    }
+
+    public function kirimRating(Request $req){
+        $rating = new RatingPaketKonsultanModel();
+        $rating->id = 0;
+        $rating->idbeli = $req->idbeli;
+        $rating->konsultan = $req->konsultan;
+        $rating->paket = $req->paket;
+        $rating->ratingpaket = $req->ratingpaket;
+        $rating->ratingkonsultan = $req->ratingkonsultan;
+        $rating->review_konsultan = $req->reviewkonsultan;
+        $rating->review_paket = $req->reviewpaket;
+        $rating->save();
     }
 
     public function getPaketBatal(Request $req){

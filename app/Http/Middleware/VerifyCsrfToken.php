@@ -75,6 +75,11 @@ class VerifyCsrfToken extends Middleware
         '/getDetailTransProduk',
         '/konfirmasiakun',
         '/tolakTransaksiProduk',
-        '/getHistoryTopup'
+        '/getHistoryTopup',
+        '/cekPesan',
+        '/getListChat',
+        '/cariInformasi',
+        '/editProduk',
+        '/kirimRating'
     ];
 }

@@ -48,6 +48,8 @@ class hbelipaketmodel extends Model
                                 ->join("member","member.id","=","hbelipaket.iduser")
                                 ->where("paket.konsultan","=",$user)
                                 ->where("hbelipaket.status","=","2")
+                                ->orwhere("paket.konsultan","=",$user)
+                                ->where("hbelipaket.status","=","5")
                                 ->get();
     }
 
@@ -66,6 +68,8 @@ class hbelipaketmodel extends Model
                                 ->join("member","member.id","=","paket.konsultan")
                                 ->where("hbelipaket.iduser","=",$user)
                                 ->where("hbelipaket.status","=","2")
+                                ->orwhere("hbelipaket.iduser","=",$user)
+                                ->where("hbelipaket.status","=","5")
                                 ->get();
     }
 

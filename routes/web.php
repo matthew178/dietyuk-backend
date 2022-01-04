@@ -45,6 +45,7 @@ Route::post('/hapusjadwal',"jadwalcontroller@hapusjadwal");
 Route::post('/getdetailbyid', "jadwalcontroller@getdetailbyid");
 Route::post('/kurangSpek',"jadwalcontroller@kurangSpek");
 Route::post('/tambahSpek',"jadwalcontroller@tambahSpek");
+Route::post('/cariInformasi',"jadwalcontroller@searchInfo");
 
 //produk
 Route::post('/getprodukbykonsultan', "produkcontroller@getprodukkonsultan");
@@ -53,6 +54,8 @@ Route::post('/getProdukDetail',"produkcontroller@getProdukDetail");
 Route::post('/searchProduk',"produkcontroller@cariProduk");
 Route::post('/tambahproduk',"produkcontroller@tambahproduk");
 Route::post('/getProdukCart',"produkcontroller@getProdukCart");
+Route::post('/editProduk',"produkcontroller@editproduk");
+
 Route::post('/tesRouting',"Controller@tes");
 
 //belipaket
@@ -69,6 +72,7 @@ Route::post('/ubahStatusJadwal', "belipaketcontroller@ubahstatus");
 Route::post('/getPaketBeliKonsultan', "belipaketcontroller@paketBeliKonsultan");
 Route::post('/getPaketSelesaiKonsultan', "belipaketcontroller@paketSelesaiKonsultan");
 Route::post('/getTransaksiPaketKonsultan',"belipaketcontroller@getTransaksiPaketKonsultan");
+Route::post('/kirimRating',"belipaketcontroller@kirimRating");
 
 Route::get('/kirim-email', 'Controller@index');
 
@@ -108,6 +112,10 @@ Route::post('/getProvinsiAwal', "KotaController@getProvinsiAwal");
 Route::post('/topup', "saldocontroller@topup");
 Route::post('/updatebukti',"saldocontroller@updatebukti");
 Route::post('/getHistoryTopup',"saldocontroller@getHistoryTopup");
+
+//chat
+Route::post('/cekPesan',"chatcontroller@cekPesan");
+Route::post('/getListChat',"chatcontroller@getListChatUser");
 
 //admin -> post
 Route::post('/loginadmin', "admincontroller@login");

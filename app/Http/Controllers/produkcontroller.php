@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\KategoriModel;
 use Illuminate\Http\Request;
 use App\ProdukModel;
 
@@ -79,6 +80,25 @@ class produkcontroller extends Controller
         $model = new ProdukModel();
         $hsl = $model->getProdukDetail($req->kodeproduk);
         $return[0]['produk'] = $hsl;
+        echo json_encode($return);
+    }
+
+    public function editproduk(Request $req){
+        $produk = ProdukModel::find($req->idproduk);
+        $produk->namaproduk = $req->nama;
+        $produk->kodekategori = $req->kategori;
+        $produk->kemasan = $req->kemasan;
+        $produk->berat = $req->berat;
+        $produk->harga = $req->harga;
+        $produk->deskripsi = $req->desc;
+        $produk->varian = $req->varian;
+        if($req->m_filename != ""){
+            $datagambar = base64_decode($req->m_image);
+            file_put_contents("gambar/produk/".$req->m_filename, $datagambar);
+            $produk->foto = $req->m_filename;
+        }
+        $produk->save();
+        $return[0]['status'] = 'berhasil';
         echo json_encode($return);
     }
 

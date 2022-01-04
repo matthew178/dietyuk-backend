@@ -39,6 +39,54 @@ class jadwalcontroller extends Controller
 		echo json_encode($return);
     }
 
+    public function searchInfo(Request $req){
+        $consumer_key = "6156ad50311c4f06b44c74f4d3faf814";
+        $secret_key = "93cfdd942c1e426f826867bdab74ebbe";
+
+        $base = rawurlencode("GET")."&";
+        $base .= "http%3A%2F%2Fplatform.fatsecret.com%2Frest%2Fserver.api&";
+        $params = "format=json&";
+        $params .= "method=foods.search&";
+        $params .= "oauth_consumer_key=$consumer_key&";
+        $params .= "oauth_nonce=".rand()."&";
+        $params .= "oauth_signature_method=HMAC-SHA1&";
+        $params .= "oauth_timestamp=".time()."&";
+        $params .= "oauth_version=1.0&";
+        $params .= "search_expression=".$req->search;
+
+        $params2 = rawurlencode($params);
+        $base .= $params2;
+
+        $sig= base64_encode(hash_hmac('sha1', $base, "$secret_key&",
+            true));
+
+        $url = "http://platform.fatsecret.com/rest/server.api?".
+            $params."&oauth_signature=".rawurlencode($sig);
+
+        list($output,$error,$info) = $this->loadFoods($url);
+        if($error == 0){
+            if($info['http_code'] == '200')
+                echo json_encode($output);
+            else
+                die('Status INFO : '.$info['http_code']);
+        }
+
+        else
+            die('Status ERROR : '.$error);
+    }
+
+    function loadFoods($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        $error = curl_error($ch);
+        $info = curl_getinfo($ch);
+        curl_close($ch);
+        return array($output,$error,$info);
+    }
+
     public function hapusjadwal(Request $req){
         $jadwal = JadwalModel::find($req->id)->delete();
         echo "sukses";

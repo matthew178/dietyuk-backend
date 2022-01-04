@@ -126,6 +126,8 @@ class usercontroller extends Controller
 		$model = new MemberModel();
 		$hsl = $model->loginUser($username, $password);
 		if(count($hsl) > 0){
+            $hsl[0]->fbkey = $req->token;
+            $hsl[0]->save();
 			$return[0]['pesan'] = "sukses";
 			$return[0]['id'] = $hsl[0]->id;
             $return[0]['status'] = $hsl[0]->status;
