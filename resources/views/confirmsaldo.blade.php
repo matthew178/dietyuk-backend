@@ -14,7 +14,7 @@
             <div class="container-fluid">
                 <div class="row" id="main" >
                     <div class="col-sm-12 col-md-12 well" id="content">
-                        <h1>Konfirmasi Saldo</h1>
+                        <h1>Konfirmasi TopUp Saldo</h1>
                         <div class="table-responsive" id="sailorTableArea">
                             <table id="sailorTable" class="table table-striped table-bordered" width="100%">
                                 <thead>
@@ -38,8 +38,8 @@
                                                 <td>Rp {{number_format($saldo[$i]->saldo,2,',','.')}}</td>
                                                 <td>{{$saldo[$i]->waktu}}</td>
                                                 <td>{{$saldo[$i]->bank}}</td>
-                                                <td ><a href="/dietyuk/public/gambar/buktitransfer/{{$saldo[$i]->buktitransfer}}">Lihat</a></td>
-                                            <form action="/dietyuk/public/konfirmasisaldo" method="post">
+                                                <td ><a href="/public/gambar/buktitransfer/{{$saldo[$i]->buktitransfer}}">Lihat</a></td>
+                                            <form action="/public/konfirmasisaldo" method="post">
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{$saldo[$i]->id}}">
                                                 <td ><input type="submit" value="Konfirmasi" class='btn btn-primary'></td>

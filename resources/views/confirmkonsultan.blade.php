@@ -34,7 +34,7 @@
                                     @endphp
                                     @for ($i = 0; $i < $jum; $i++)
                                         <tr>
-                                            <form action="/dietyuk/public/detail/{{$member[$i]->username}}" method="post">
+                                            <form action="/public/detail/{{$member[$i]->username}}" method="post">
                                                 @csrf
                                                 <td>{{$member[$i]->username}}</td>
                                                 <td>{{$member[$i]->email}}</td>

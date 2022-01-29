@@ -6,6 +6,7 @@ use App\dbeliModel;
 use App\hbelipaketmodel;
 use Illuminate\Http\Request;
 use App\JadwalModel;
+use App\PaketModel;
 use Carbon\Carbon;
 
 class jadwalcontroller extends Controller
@@ -36,6 +37,18 @@ class jadwalcontroller extends Controller
         $jadwalBaru->takaran = $req->takaran;
 		$jadwalBaru->save();
 		$return[0]['status'] = "sukses";
+        $paket = PaketModel::find($req->id);
+        $jadwal = new JadwalModel();
+        $hari = $jadwal->cekJadwal($req->id);
+        if($paket->status != 2){
+            if($paket->durasi == count($hari)){
+                $paket->status = 1;
+            }
+            else{
+                $paket->status = 3;
+            }
+            $paket->save();
+        }
 		echo json_encode($return);
     }
 
@@ -88,7 +101,19 @@ class jadwalcontroller extends Controller
     }
 
     public function hapusjadwal(Request $req){
-        $jadwal = JadwalModel::find($req->id)->delete();
+        $jadwalhapus = JadwalModel::find($req->id)->delete();
+        $paket = PaketModel::find($req->id);
+        $jadwal = new JadwalModel();
+        $hari = $jadwal->cekJadwal($req->id);
+        if($paket->status != 2){
+            if($paket->durasi == count($hari)){
+                $paket->status = 1;
+            }
+            else{
+                $paket->status = 3;
+            }
+            $paket->save();
+        }
         echo "sukses";
     }
 

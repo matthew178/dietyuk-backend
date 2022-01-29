@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\hbelipaketmodel;
+use App\JadwalModel;
 use Illuminate\Http\Request;
 use App\KategoriModel;
 use App\JenisPaketModel;
@@ -205,6 +206,18 @@ class admincontroller extends Controller
         $model = new PaketModel();
         $paket = $model->aktifkanPaket($id);
         $pakets = $model->getPaket();
+        $paket = PaketModel::find($id);
+        $jadwal = new JadwalModel();
+        $hari = $jadwal->cekJadwal($id);
+        if($paket->status != 2){
+            if($paket->durasi == count($hari)){
+                $paket->status = 1;
+            }
+            else{
+                $paket->status = 3;
+            }
+            $paket->save();
+        }
         return view("masterpaket",["paket"=>PaketModel::all()]);
     }
 }

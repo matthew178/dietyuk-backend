@@ -13,7 +13,7 @@
     </div>
 
     <!-- Login Form -->
-    <form action="/dietyuk/public/loginadmin" method="post">
+    <form action="/public/loginadmin" method="post">
         @csrf
       <input type="text" id="uname" class="fadeIn second" name="uname" placeholder="Username">
       <input type="text" id="password" class="fadeIn third" name="password" placeholder="Password">

@@ -27,6 +27,7 @@ Route::post('/resetPassword', "usercontroller@resetPass");
 Route::post('/tambahLibur',"usercontroller@tambahLibur");
 Route::post('/selesaikanTransaksi',"admincontroller@selesaikanTransaksi");
 Route::post('/konfirmasiakun',"usercontroller@konfirmasiAkun");
+Route::post('/kirimEmailAktivasi',"usercontroller@kirimEmailAktivasi");
 
 //paket
 Route::post('/tambahpaket',"paketcontroller@tambahpaket");

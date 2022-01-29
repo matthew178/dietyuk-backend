@@ -18,7 +18,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/dietyuk/public/admin">
+                <a class="navbar-brand" href="/public/admin">
                     <img src="{{asset('Dietyuk.png')}}" style="width:175px; height:50px" alt="LOGO">
                 </a>
             </div>
@@ -38,17 +38,18 @@
                     <li>
                         <a href="#" data-toggle="collapse" data-target="#submenu-1"><i class="fa fa-fw fa-list"></i> Master <i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul id="submenu-1" class="collapse">
-                             <li><a href="/dietyuk/public/mastermember"><i class="fa fa-angle-double-right"></i> Master Member</a></li>
-                            <li><a href="/dietyuk/public/masterpaket"><i class="fa fa-angle-double-right"></i> Master Paket</a></li>
-                            <li><a href="/dietyuk/public/jenispaket"><i class="fa fa-angle-double-right"></i> Master Jenis Paket</a></li>
-                            <li><a href="/dietyuk/public/jenisproduk"><i class="fa fa-angle-double-right"></i> Master Jenis Produk</a></li>
+                             <li><a href="/public/mastermember"><i class="fa fa-angle-double-right"></i> Master Member</a></li>
+                            <li><a href="/public/masterpaket"><i class="fa fa-angle-double-right"></i> Master Paket</a></li>
+                            <li><a href="/public/jenispaket"><i class="fa fa-angle-double-right"></i> Master Jenis Paket</a></li>
+                            <li><a href="/public/jenisproduk"><i class="fa fa-angle-double-right"></i> Master Jenis Produk</a></li>
                         </ul>
                     </li>
                     <li>
                         <a href="#" data-toggle="collapse" data-target="#submenu-2"><i class="fa fa-fw fa-check"></i>  Konfirmasi <i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul id="submenu-2" class="collapse">
-                            <li><a href="/dietyuk/public/confirmkonsultan"><i class="fa fa-angle-double-right"></i> Konfirmasi Konsultan</a></li>
-                            <li><a href="/dietyuk/public/confirmsaldo"><i class="fa fa-angle-double-right"></i> Konfirmasi Saldo</a></li>
+                            <li><a href="/public/confirmkonsultan"><i class="fa fa-angle-double-right"></i> Konfirmasi Konsultan</a></li>
+                            <li><a href="/public/confirmsaldo"><i class="fa fa-angle-double-right"></i> Konfirmasi TopUp</a></li>
+                            <li><a href="/public/confirmsaldo"><i class="fa fa-angle-double-right"></i> Konfirmasi Penarikan</a></li>
                         </ul>
                     </li>
                     {{-- <li>

@@ -51,12 +51,12 @@
        </table>
        <br />
     <center>
-        <form action="/dietyuk/public/terima" method="post">
+        <form action="/public/terima" method="post">
         @csrf
             <input type="hidden" name="username" value="{{$member[0]->id}}">
             <input type="submit" class="btn btn-primary" value="Terima">
         </form>
-        <form action="/dietyuk/public/tolak" method="post">
+        <form action="/public/tolak" method="post">
             @csrf
             <input type="hidden" name="username" value="{{$member[0]->id}}">
             <input type="submit" class="btn btn-danger" value="Tolak">

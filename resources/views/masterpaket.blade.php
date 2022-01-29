@@ -15,7 +15,7 @@
                 <div class="row" id="main" >
                     <div class="col-sm-12 col-md-12 well" id="content">
                         <h1>Master Paket</h1><br>
-                        <form action="/dietyuk/public/searchPaket" method="post" class="form-inline">
+                        <form action="/public/searchPaket" method="post" class="form-inline">
                             @csrf
                             <input type="text" class="form-control" id="cari" name="cari" placeholder="Cari Paket">
                             <input type="submit" class= "btn btn-primary" value="Cari">
@@ -46,14 +46,20 @@
                                                 @if ($paket[$i]->status == 1)
                                                     <td style="color: green">Aktif</td>
                                                 @else
-                                                    <td style="color: red">Block</td>
+                                                    @if ($paket[$i]->status == 2)
+                                                        <td style="color: red">Block</td>
+                                                    @else
+                                                        <td style="color: slategray">Belum Siap</td>
+                                                    @endif
                                                 @endif
                                             @endif
                                             @if ($paket[$i]->status == 1)
-                                                <td><a href="/dietyuk/public/blockpaket/{{$paket[$i]->id_paket}}"><button type="button" class="btn btn-primary">Block</button></a></td>
+                                                <td><a href="/public/blockpaket/{{$paket[$i]->id_paket}}"><button type="button" class="btn btn-primary">Block</button></a></td>
                                             @else
                                                 @if ($paket[$i]->status == 2)
-                                                    <td><a href="/dietyuk/public/aktifkanpaket/{{$paket[$i]->id_paket}}"><button type="button" class="btn btn-primary">Aktifkan</button></a></td>
+                                                    <td><a href="/public/aktifkanpaket/{{$paket[$i]->id_paket}}"><button type="button" class="btn btn-primary">Aktifkan</button></a></td>
+                                                @else
+                                                <td></td>
                                                 @endif
                                             @endif
 

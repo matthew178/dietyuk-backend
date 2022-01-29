@@ -80,6 +80,7 @@ class VerifyCsrfToken extends Middleware
         '/getListChat',
         '/cariInformasi',
         '/editProduk',
-        '/kirimRating'
+        '/kirimRating',
+        '/kirimEmailAktivasi'
     ];
 }

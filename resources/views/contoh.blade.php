@@ -1,1 +1,1 @@
-apa kabar {{$data['message']}}
+apa kabar

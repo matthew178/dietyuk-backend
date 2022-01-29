@@ -16,7 +16,7 @@
                 <div class="row" id="main" >
                     <div class="col-sm-12 col-md-12 well" id="content">
                         <h1>Master Member</h1><br>
-                        <form action="/dietyuk/public/searchMember" method="post" class="form-inline">
+                        <form action="/public/searchMember" method="post" class="form-inline">
                             @csrf
                             <input type="text" class="form-control" id="cari" name="cari" placeholder="Cari Member">
                             <input type="submit" class= "btn btn-primary" value="Cari">
@@ -66,10 +66,10 @@
                                                 @endif
                                             @endif
                                             @if ($member[$i]->status == "Aktif")
-                                                <td><a href="/dietyuk/public/block/{{$member[$i]->id}}"><button type="button" class="btn btn-primary">Block</button></a></td>
+                                                <td><a href="/public/block/{{$member[$i]->id}}"><button type="button" class="btn btn-primary">Block</button></a></td>
                                             @else
                                                 @if ($member[$i]->status == "Tidak Aktif")
-                                                    <td><a href="/dietyuk/public/aktifkan/{{$member[$i]->id}}"><button type="button" class="btn btn-primary">Aktifkan</button></a></td>
+                                                    <td><a href="/public/aktifkan/{{$member[$i]->id}}"><button type="button" class="btn btn-primary">Aktifkan</button></a></td>
                                                 @endif
                                             @endif
                                         </tr>

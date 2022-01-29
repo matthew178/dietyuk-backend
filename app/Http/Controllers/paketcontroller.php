@@ -25,7 +25,7 @@ class paketcontroller extends Controller
 		$paketBaru->estimasiturun = $req->estimasi;
 		$paketBaru->harga = $req->harga;
 		$paketBaru->durasi = $req->durasi;
-		$paketBaru->status = 0;
+		$paketBaru->status = 3;
 		$paketBaru->rating = 0;
 		$paketBaru->konsultan = $req->konsultan;
 		$paketBaru->waktutambah = NOW();

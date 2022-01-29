@@ -48,15 +48,6 @@ class usercontroller extends Controller
 			else{
 				$memberBaru->role = "member";
 				$memberBaru->status = "Pending";
-                $data['email'] = $request->email;
-                Mail::send('konfirmasiakun', ['data'=> $data],
-                    function($message) use ($request)
-                    {
-                        $message->subject("Konfirmasi Akun");
-                        $message->from("hendrymatthew97@gmail.com","hendrymatthew97@gmail.com");
-                        $message->to($request->email);
-                    }
-                );
 			}
 			if($request->jk == "pria"){
 				$memberBaru->jeniskelamin = "pria";
@@ -70,6 +61,7 @@ class usercontroller extends Controller
 
 			$return[0]['status'] = "sukses";
 		}
+        // $return[0]['status'] = $request->username."-".$request->email."-".$request->nohp."-".$request->password."-".$request->konsultan."-".$request->jk;
 		echo json_encode($return);
     }
 
@@ -78,6 +70,18 @@ class usercontroller extends Controller
         $hsl = $model->memberEmail($req->email);
         $hsl[0]->status = "Aktif";
         $hsl[0]->save();
+    }
+
+    public function kirimEmailAktivasi(Request $req){
+        $data['email'] = $req->email;
+        Mail::send('konfirmasiakun', ['data'=> $data],
+                    function($message) use ($req)
+                    {
+                        $message->subject("Konfirmasi Akun");
+                        $message->from("hendrymatthew97@gmail.com","hendrymatthew97@gmail.com");
+                        $message->to($req->email);
+                    }
+                );
     }
 
 	public function kirimEmailVerifikasi(Request $req){

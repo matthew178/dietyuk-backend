@@ -41,7 +41,7 @@
                             </table>
                         </div><br><br><br>
                         <h1>Tambah Jenis Paket</h1>
-                        <form action="/dietyuk/public/tambahjenispaket" method="post">
+                        <form action="/public/tambahjenispaket" method="post">
                             @csrf
                             <label for="namajenis">Nama Jenis Paket</label>
                             <input type="text" class="form-control" name="namajenis" id="namajenis"><br>

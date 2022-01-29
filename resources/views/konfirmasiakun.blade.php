@@ -34,7 +34,7 @@
                 <td style="padding:10px;font-size:14px; width:100%;">
                     <p>Terima kasih telah melakukan pendaftaran pada aplikasi <b>Dietyuk!</b></p>
                     <p>Silahkan melakukan konfirmasi email untuk dapat masuk kedalam aplikasi.</p><br>
-                    <form action="/dietyuk/public/konfirmasiakun" method="post">
+                    <form action="/public/konfirmasiakun" method="post">
                         @csrf
                         <center>
                             <input type="hidden" name="email" value="{{$data['email']}}">
