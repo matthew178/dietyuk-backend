@@ -14,42 +14,43 @@
             <div class="container-fluid">
                 <div class="row" id="main" >
                     <div class="col-sm-12 col-md-12 well" id="content">
-                        <h1>Master Jenis Paket</h1>
+                        <h1>Konfirmasi Penarikan Saldo</h1>
                         <div class="table-responsive" id="sailorTableArea">
                             <table id="sailorTable" class="table table-striped table-bordered" width="100%">
                                 <thead>
                                     <tr>
-                                        <th>Kode Jenis Paket</th>
-                                        <th>Nama Jenis Paket</th>
-                                        <th>Deskripsi Jenis Paket</th>
+                                        <th>Username</th>
+                                        <th>Jumlah Penarikan</th>
+                                        <th>Waktu</th>
+                                        <th>Bank</th>
+                                        <th>Nomor Rekening</th>
+                                        <th>Atas Nama</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
-                                        $jum = count($jenis);
+                                        $jum = count($saldo);
                                     @endphp
                                     @for ($i = 0; $i < $jum; $i++)
                                         <tr>
-                                            <td>{{$jenis[$i]->idjenispaket}}</td>
-                                            <td>{{$jenis[$i]->namajenispaket}}</td>
-                                            <td style="text-align: justify">{{$jenis[$i]->deskripsijenis}}</td>
-                                            <td><a href=""><button type="button" class="btn btn-primary">Edit</button></a></td>
+
+                                                <td>{{$saldo[$i]->username}}</td>
+                                                <td>Rp {{number_format($saldo[$i]->saldo,2,',','.')}}</td>
+                                                <td>{{$saldo[$i]->waktu}}</td>
+                                                <td>{{$saldo[$i]->bank}}</td>
+                                                <td>{{$saldo[$i]->nomorrekening}}</td>
+                                                <td>{{$saldo[$i]->atasnama}}</td>
+                                            <form action="/public/konfirmasipenarikan" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{$saldo[$i]->id}}">
+                                                <td ><input type="submit" value="Konfirmasi" class='btn btn-primary'></td>
+                                            </form>
                                         </tr>
                                     @endfor
                                 </tbody>
                             </table>
-                        </div><br><br><br>
-                        <h1>Tambah Jenis Paket</h1>
-                        <form action="/public/tambahjenispaket" method="post">
-                            @csrf
-                            <label for="namajenis">Nama Jenis Paket</label>
-                            <input type="text" class="form-control" name="namajenis" id="namajenis"><br>
-                            <label for="deskripsi">Deskripsi Jenis Paket</label>
-                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea><br>
-                            Background : <input type="file" class="" name="background" id="background"><br><br>
-                            <input type="submit" class="btn btn-primary" value="Submit">
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>

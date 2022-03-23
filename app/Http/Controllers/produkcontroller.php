@@ -102,11 +102,100 @@ class produkcontroller extends Controller
         echo json_encode($return);
     }
 
-    public function cariProduk(Request $req){
+    public function searchProdukKonsultan(Request $req){
         if($req->cari != ""){
             $model = new ProdukModel();
-            $hsl = $model->searchProduk($req->cari,$req->id);
+            $hsl = $model->searchProdukKonsultan($req->cari,$req->konsultan);
             $return[0]['produk'] = $hsl;
+        }
+        else{
+            $model = new ProdukModel();
+            $hsl = $model->getprodukbykonsultan($req->konsultan);
+            $return[0]['produk'] = $hsl;
+        }
+        echo json_encode($return);
+    }
+
+    public function searchfilterProduk(Request $req){
+        if($req->id != "all"){
+            if($req->cari != "" && $req->hargaawal != "" && $req->hargaakhir != ""){
+                $model = new ProdukModel();
+                $hsl = $model->searchFilterProduk($req->cari,$req->id,$req->hargaawal,$req->hargaakhir);
+                $return[0]['produk'] = $hsl;
+                $return[0]['status'] = "lengkap";
+            }
+            else if($req->cari == "" && $req->hargaawal != "" && $req->hargaakhir != ""){
+                $model = new ProdukModel();
+                $hsl = $model->filterProduk($req->id,$req->hargaawal,$req->hargaakhir);
+                $return[0]['produk'] = $hsl;
+                $return[0]['status'] = "awalakhir";
+            }
+            else if($req->cari == "" && $req->hargaawal == "" && $req->hargaakhir != ""){
+                $model = new ProdukModel();
+                $hsl = $model->filterakhir($req->id,$req->hargaakhir);
+                $return[0]['produk'] = $hsl;
+                $return[0]['status'] = "akhir";
+            }
+            else if($req->cari == "" && $req->hargaawal != "" && $req->hargaakhir == ""){
+                $model = new ProdukModel();
+                $hsl = $model->filterawal($req->id,$req->hargaawal);
+                $return[0]['produk'] = $hsl;
+                $return[0]['status'] = "awal";
+            }
+            else{
+                if($req->id != "all"){
+                    $model = new ProdukModel();
+                    $hsl = $model->getProdukByKategori($req->id);
+                    $return[0]['produk'] = $hsl;
+                }
+                else{
+                    $return[0]['produk'] = ProdukModel::all();
+                }
+
+            }
+        }
+        else{
+            if($req->cari != "" && $req->hargaawal != "" && $req->hargaakhir != ""){
+                $model = new ProdukModel();
+                $hsl = $model->searchFilterProduk1($req->cari,$req->id,$req->hargaawal,$req->hargaakhir);
+                $return[0]['produk'] = $hsl;
+                $return[0]['status'] = "lengkap1";
+            }
+            else if($req->cari == "" && $req->hargaawal != "" && $req->hargaakhir != ""){
+                $model = new ProdukModel();
+                $hsl = $model->filterProduk1($req->id,$req->hargaawal,$req->hargaakhir);
+                $return[0]['produk'] = $hsl;
+                $return[0]['status'] = "awalakhir1";
+            }
+            else if($req->cari == "" && $req->hargaawal == "" && $req->hargaakhir != ""){
+                $model = new ProdukModel();
+                $hsl = $model->filterakhir1($req->id,$req->hargaakhir);
+                $return[0]['produk'] = $hsl;
+                $return[0]['status'] = "akhir1";
+            }
+            else if($req->cari == "" && $req->hargaawal != "" && $req->hargaakhir == ""){
+                $model = new ProdukModel();
+                $hsl = $model->filterawal1($req->id,$req->hargaawal);
+                $return[0]['produk'] = $hsl;
+                $return[0]['status'] = "awal1";
+            }
+        }
+
+        echo json_encode($return);
+    }
+
+    public function cariProduk(Request $req){
+        if($req->cari != ""){
+            if($req->id != "all"){
+                $model = new ProdukModel();
+                $hsl = $model->searchProduk($req->cari,$req->id);
+                $return[0]['produk'] = $hsl;
+            }
+            else{
+                $model = new ProdukModel();
+                $hsl = $model->searchProduk1($req->cari,$req->id);
+                $return[0]['produk'] = $hsl;
+            }
         }
         else{
             if($req->id != "all"){
@@ -120,6 +209,5 @@ class produkcontroller extends Controller
 
         }
         echo json_encode($return);
-
     }
 }

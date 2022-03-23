@@ -20,4 +20,18 @@ class LiburModel extends Model
                         ->where("konsultan","=",$konsultan)
                         ->get();
     }
+
+    public function getBelumLiburKonsultan(){
+        return LiburModel::select("liburkonsultan.*")
+                        ->where("status","=","0")
+                        ->where("tanggalawal","<=",date("Y-m-d"))
+                        ->get();
+    }
+
+    public function getAllLiburKonsultan(){
+        return LiburModel::select("liburkonsultan.*")
+                        ->where("status","=","1")
+                        ->where("tanggalakhir","<=",date("Y-m-d"))
+                        ->get();
+    }
 }

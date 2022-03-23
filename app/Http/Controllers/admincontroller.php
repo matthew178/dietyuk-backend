@@ -7,10 +7,13 @@ use App\JadwalModel;
 use Illuminate\Http\Request;
 use App\KategoriModel;
 use App\JenisPaketModel;
+use App\LiburModel;
 use App\MemberModel;
 use App\PaketModel;
+use App\PenarikanModel;
 use App\SaldoModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class admincontroller extends Controller
 {
@@ -100,6 +103,35 @@ class admincontroller extends Controller
             if($hsl[$i]->tanggalselesai < $tgl){
                 $hsl[$i]->status = 5;
                 $hsl[$i]->save();
+                $paket = PaketModel::find($hsl[$i]->idpaket);
+                $member = MemberModel::find($paket->konsultan);
+                $hitung = ($hsl[$i]->totalharga*2/100);
+                $member->saldo = $member->saldo + $hsl[$i]->totalharga - $hitung;
+                $member->save();
+                $saldo = new SaldoModel();
+                $saldo->id = 0;
+                $saldo->id_user = $hsl[$i]->iduser;
+                $saldo->saldo = $hsl[$i]->totalharga - $hitung;
+                $saldo->status = 1;
+                $saldo->waktu = date('Y-m-d H:i:s');
+                $saldo->bank = "Paket Selesai";
+                $saldo->buktitransfer = null;
+                $saldo->save();
+            }
+        }
+        $libur = new LiburModel();
+        $hsl1 = $libur->getBelumLiburKonsultan();
+        for($j = 0; $j < count($hsl1); $j++){
+            if($hsl1[$j]->tanggalawal <= date("Y-m-d")){
+                $hsl1[$j]->status = 1;
+                $hsl1[$j]->save();
+            }
+        }
+        $hsl2 = $libur->getAllLiburKonsultan();
+        for($j = 0; $j < count($hsl2); $j++){
+            if($hsl2[$j]->tanggalakhir <= date("Y-m-d")){
+                $hsl2[$j]->status = 2;
+                $hsl2[$j]->save();
             }
         }
     }
@@ -114,6 +146,12 @@ class admincontroller extends Controller
         $model = new SaldoModel();
         $saldo = $model->getSaldoBelumConfirm();
         return view("confirmsaldo",["saldo" => $saldo]);
+    }
+
+    public function confirmpenarikan(){
+        $model = new PenarikanModel();
+        $saldo = $model->getSaldoBelumConfirm();
+        return view("confirmpenarikan",["saldo" => $saldo]);
     }
 
     public function mastermember(){
@@ -165,6 +203,13 @@ class admincontroller extends Controller
         return view("confirmsaldo",["saldo" => $saldo]);
     }
 
+    public function konfirmasipenarikan(Request $req){
+        $model = new PenarikanModel();
+        $hsl = $model->konfirmasiPenarikan($req->id);
+        $saldo = $model->getSaldoBelumConfirm();
+        return view("confirmpenarikan",["saldo" => $saldo]);
+    }
+
     public function terimakonsultan(Request $req){
         $konsul = $req->username;
         $member = new MemberModel();
@@ -187,6 +232,31 @@ class admincontroller extends Controller
         $model = new MemberModel();
         $user = $model->blockUser($id);
         return view("mastermember",["member"=>MemberModel::all()]);
+    }
+
+    public function laporanpenjualanpaket(Request $req){
+        $year = Carbon::now()->year();
+        $hsl = DB::select(DB::raw("SELECT COUNT(*) as jumlah, YEAR(`tanggalbeli`) as tahun, MONTH(`tanggalbeli`) as bulan FROM `hbelipaket` WHERE YEAR(`tanggalbeli`) = ".date("Y")." GROUP BY MONTH(`tanggalbeli`),YEAR(`tanggalbeli`)"));
+        $data = "";
+        $bulans = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+        $arr = [];
+        foreach ($bulans as $bulan) {
+            $arr[] = (object)array("bulan" => $bulan, "jumlah" => 0);
+        }
+        for($i = 0; $i < count($hsl); $i++){
+            $arr[$hsl[$i]->bulan-1]->jumlah = $hsl[$i]->jumlah;
+        }
+        for($i = 0; $i < count($arr); $i++){
+            $data .= "['".$arr[$i]->bulan."',".$arr[$i]->jumlah."],";
+        }
+        $hsl = DB::select(DB::raw("SELECT DISTINCT YEAR(`tanggalbeli`) as tahun FROM `hbelipaket` ORDER BY YEAR(`tanggalbeli`) DESC"));
+        return view("laporanpenjualanpaket",["tahun" => date("Y"),"datatahun" => $hsl], compact('data'));
+    }
+
+    public function detailbulanpaket(Request $req){
+        $model = new hbelipaketmodel();
+        $hsl = $model->getdetailtransaksibulan($req->tahun, $req->bulan);
+        return response()->json($hsl);
     }
 
     public function aktifkanuser($id){

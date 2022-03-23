@@ -47,6 +47,13 @@ class MemberModel extends Model
                         ->get();
     }
 
+    public function getDataCustomer($id){
+        return MemberModel::select('member.*')
+                        ->join('hbelipaket','hbelipaket.iduser','=','member.id')
+                        ->where('hbelipaket.id','=',$id)
+                        ->get();
+    }
+
     public function memberEmail($email){
         return MemberModel::select('member.*')
                         ->where('email','=',$email)

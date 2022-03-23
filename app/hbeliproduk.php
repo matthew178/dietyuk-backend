@@ -68,6 +68,38 @@ class hbeliproduk extends Model
                             ->get();
     }
 
+    public function getTransaksiPackingMember($id){
+        return hbeliproduk::select("hbeliproduk.*","member.nama","alamat.penerima","alamat.nomortelepon","kota.nama_kota","kota.provinsi","alamat.alamat_detail")
+                            ->join("member","member.id","=","hbeliproduk.pemesan")
+                            ->join("alamat","alamat.id","=","hbeliproduk.alamat")
+                            ->join("kota","kota.id_kota","=","alamat.kota")
+                            ->where("hbeliproduk.pemesan","=",$id)
+                            ->where("hbeliproduk.status","=",0)
+                            ->get();
+    }
+
+    public function getTransaksiProdukKirimMember($id){
+        return hbeliproduk::select("hbeliproduk.*","member.nama","alamat.penerima","alamat.nomortelepon","kota.nama_kota","kota.provinsi","alamat.alamat_detail")
+                            ->join("member","member.id","=","hbeliproduk.pemesan")
+                            ->join("alamat","alamat.id","=","hbeliproduk.alamat")
+                            ->join("kota","kota.id_kota","=","alamat.kota")
+                            ->where("hbeliproduk.pemesan","=",$id)
+                            ->where("hbeliproduk.status","=",1)
+                            ->get();
+    }
+
+    public function getTransaksiProdukSelesaiMember($id){
+        return hbeliproduk::select("hbeliproduk.*","member.nama","alamat.penerima","alamat.nomortelepon","kota.nama_kota","kota.provinsi","alamat.alamat_detail")
+                            ->join("member","member.id","=","hbeliproduk.pemesan")
+                            ->join("alamat","alamat.id","=","hbeliproduk.alamat")
+                            ->join("kota","kota.id_kota","=","alamat.kota")
+                            ->where("hbeliproduk.pemesan","=",$id)
+                            ->where("hbeliproduk.status","=",2)
+                            ->Orwhere("hbeliproduk.pemesan","=",$id)
+                            ->where("hbeliproduk.status","=",3)
+                            ->get();
+    }
+
     public function getDetailHeader($idbeli){
         return hbeliproduk::select("hbeliproduk.*","member.nama","alamat.penerima","alamat.nomortelepon","kota.nama_kota","kota.provinsi","alamat.alamat_detail")
                             ->join("member","member.id","=","hbeliproduk.pemesan")

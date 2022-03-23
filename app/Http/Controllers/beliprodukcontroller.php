@@ -22,6 +22,7 @@ class beliprodukcontroller extends Controller
         $model->alamat = $req->alamat;
         $model->waktubeli = date("Y-m-d H:i:s");
         $model->total = $req->total;
+        $model->nomorresi = "";
         $model->status = 0;
         $model->kurir = $req->kurir;
         $model->totalhargaproduk = $req->totalharga;
@@ -41,7 +42,6 @@ class beliprodukcontroller extends Controller
             $dbeli->save();
         }
         echo "berhasil";
-        // echo $req->data;
     }
 
     public function getTransaksiProdukKonsultan(Request $req){
@@ -49,6 +49,12 @@ class beliprodukcontroller extends Controller
         $hsl = $model->getTransaksiProdukKonsultan($req->konsultan);
         $return[0]['transaksi'] = $hsl;
 		echo json_encode($return);
+    }
+
+    public function updateResi(Request $req){
+        $model = hbeliproduk::find($req->idbeli);
+        $model->nomorresi = $req->resi;
+        $model->save();
     }
 
     public function tolakTransaksi(Request $req){
@@ -113,6 +119,72 @@ class beliprodukcontroller extends Controller
         $return[0]['detail'] = $detail;
         $return[0]['hitung'] = $hitung;
         echo json_encode($return);
+    }
+
+    public function getTransaksiPackingMember(Request $req){
+        $model = new hbeliproduk();
+        $hsl = $model->getTransaksiPackingMember($req->pemesan);;
+        $detail = [];
+        $hitung = [];
+        for($i = 0; $i < count($hsl); $i++){
+            $mdl = new dbeliproduk();
+            $hasil = $mdl->getDetail($hsl[$i]->id);
+            $htg = $mdl->countDetail($hsl[$i]->id);
+            $detail[$i] = $hasil;
+            $hitung[$i] = count($htg);
+        }
+        $return[0]['transaksi'] = $hsl;
+        $return[0]['detail'] = $detail;
+        $return[0]['hitung'] = $hitung;
+        echo json_encode($return);
+    }
+
+    public function getTransaksiProdukSelesaiMember(Request $req){
+        $model = new hbeliproduk();
+        $hsl = $model->getTransaksiProdukSelesaiMember($req->pemesan);;
+        $detail = [];
+        $hitung = [];
+        for($i = 0; $i < count($hsl); $i++){
+            $mdl = new dbeliproduk();
+            $hasil = $mdl->getDetail($hsl[$i]->id);
+            $htg = $mdl->countDetail($hsl[$i]->id);
+            $detail[$i] = $hasil;
+            $hitung[$i] = count($htg);
+        }
+        $return[0]['transaksi'] = $hsl;
+        $return[0]['detail'] = $detail;
+        $return[0]['hitung'] = $hitung;
+        echo json_encode($return);
+    }
+
+    public function getTransaksiProdukKirimMember(Request $req){
+        $model = new hbeliproduk();
+        $hsl = $model->getTransaksiProdukKirimMember($req->pemesan);;
+        $detail = [];
+        $hitung = [];
+        for($i = 0; $i < count($hsl); $i++){
+            $mdl = new dbeliproduk();
+            $hasil = $mdl->getDetail($hsl[$i]->id);
+            $htg = $mdl->countDetail($hsl[$i]->id);
+            $detail[$i] = $hasil;
+            $hitung[$i] = count($htg);
+        }
+        $return[0]['transaksi'] = $hsl;
+        $return[0]['detail'] = $detail;
+        $return[0]['hitung'] = $hitung;
+        echo json_encode($return);
+    }
+
+    public function terimaPesanan(Request $req){
+        $model = hbeliproduk::find($req->idbeli);
+        $model->status = 1;
+        $model->save();
+    }
+
+    public function selesaikanPesananMember(Request $req){
+        $model = hbeliproduk::find($req->idbeli);
+        $model->status = 2;
+        $model->save();
     }
 
     public function getDetailTransProduk(Request $req){

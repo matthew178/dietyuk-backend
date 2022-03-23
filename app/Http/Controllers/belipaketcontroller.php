@@ -7,6 +7,7 @@ use App\hbelipaketmodel;
 use App\JadwalModel;
 use App\laporanperkembangan;
 use App\MemberModel;
+use App\PaketModel;
 use App\RatingPaketKonsultanModel;
 use Illuminate\Http\Request;
 
@@ -95,17 +96,53 @@ class belipaketcontroller extends Controller
     }
 
     public function kirimRating(Request $req){
+        $cari = hbelipaketmodel::find($req->idbeli);
+        $paket = PaketModel::find($cari->idpaket);
         $rating = new RatingPaketKonsultanModel();
         $rating->id = 0;
         $rating->idbeli = $req->idbeli;
-        $rating->konsultan = $req->konsultan;
+        $rating->konsultan = $paket->konsultan;
         $rating->paket = $req->paket;
         $rating->ratingpaket = $req->ratingpaket;
         $rating->ratingkonsultan = $req->ratingkonsultan;
         $rating->review_konsultan = $req->reviewkonsultan;
         $rating->review_paket = $req->reviewpaket;
         $rating->save();
+        $cari->status = 2;
+        $cari->save();
+        $konsul = new RatingPaketKonsultanModel();
+        $knsl = $konsul->getRatingKonsultan($paket->konsultan);
+        $ttl = 0;
+        for($i = 0; $i < count($knsl); $i++){
+            $ttl += $knsl[$i]->ratingkonsultan;
+        }
+        $ttl = $ttl/count($knsl);
+        $member = MemberModel::find($paket->konsultan);
+        $member->rating = $this->pembulatan($ttl);
+        $member->save();
+        $pkt = new RatingPaketKonsultanModel();
+        $pket = $pkt->getRatingPaket($req->paket);
+        $ttl = 0;
+        for($i = 0; $i < count($pket); $i++){
+            $ttl += $pket[$i]->ratingpaket;
+        }
+        $ttl = $ttl/count($pket);
+        $model = PaketModel::find($req->paket);
+        $model->rating = $this->pembulatan($ttl);
+        $model->save();
     }
+
+    public function pembulatan($nilai) {
+        $depan = floor($nilai);
+        $belakang = floor((($nilai * 10) % 10));
+        print($depan);
+        print($belakang);
+
+        if($belakang < 3) { return $depan + 0.0; }
+        else if($belakang < 8) { return $depan + 0.5; }
+        else { return $depan + 1.0; }
+    }
+
 
     public function getPaketBatal(Request $req){
         $model = new hbelipaketmodel();

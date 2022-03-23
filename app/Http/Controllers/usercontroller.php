@@ -15,6 +15,41 @@ use Mail;
 
 class usercontroller extends Controller
 {
+
+    public function sendNotification(Request $req)
+    {
+        $member = MemberModel::find($req->id);
+        $tkn = $member->fbkey;
+        $rtkn = [];
+        array_push($rtkn, $tkn);
+        $ttt = 'AAAAr1-n9y8:APA91bGwcEJ0PciwlrF7p0j9Eiyg2gGe6KwECtipheRRyvzAR_Td048Dz5DpfTekDPgjjGb4lp0ovrjty6mwqVVw4y3cRPdynaSi5wXFefXlNISRPv42VfCitTaUsU_Jg016Qu-2kfWO';
+
+        $data = [
+            "registration_ids" => $rtkn,
+            "notification" => [
+                "title" => $req->title,
+                "body" => $req->pesan,
+            ]
+        ];
+        $dataString = json_encode($data);
+        $headers = [
+            'Authorization: key=' . $ttt,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        dd($response);
+    }
+
 	public function register(Request $request){
 		$member = MemberModel::all();
 		$ada = false;
@@ -70,6 +105,7 @@ class usercontroller extends Controller
         $hsl = $model->memberEmail($req->email);
         $hsl[0]->status = "Aktif";
         $hsl[0]->save();
+        return view("selesai");
     }
 
     public function kirimEmailAktivasi(Request $req){
@@ -77,8 +113,8 @@ class usercontroller extends Controller
         Mail::send('konfirmasiakun', ['data'=> $data],
                     function($message) use ($req)
                     {
-                        $message->subject("Konfirmasi Akun");
-                        $message->from("hendrymatthew97@gmail.com","hendrymatthew97@gmail.com");
+                        $message->subject("[AKTIVASI AKUN]");
+                        $message->from("admin@dietyukyuk.com","Dietyuk App");
                         $message->to($req->email);
                     }
                 );
@@ -97,7 +133,7 @@ class usercontroller extends Controller
 			function($message) use ($req)
 			{
 				$message->subject("[KODE VERIFIKASI]");
-				$message->from("hendrymatthew97@gmail.com","hendrymatthew97@gmail.com");
+				$message->from("admin@dietyukyuk.com","admin@dietyukyuk.com");
 				$message->to($req->email);
 			}
 		);
@@ -120,6 +156,13 @@ class usercontroller extends Controller
         else{
             $return[0]['pesan'] = "gagal";
         }
+        echo json_encode($return);
+    }
+
+    public function getDataCustomer(Request $req){
+        $model = new MemberModel();
+        $hsl = $model->getDataCustomer($req->id);
+        $return[0]['profile'] = $hsl;
         echo json_encode($return);
     }
 

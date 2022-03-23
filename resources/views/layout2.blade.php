@@ -48,8 +48,8 @@
                         <a href="#" data-toggle="collapse" data-target="#submenu-2"><i class="fa fa-fw fa-check"></i>  Konfirmasi <i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul id="submenu-2" class="collapse">
                             <li><a href="/public/confirmkonsultan"><i class="fa fa-angle-double-right"></i> Konfirmasi Konsultan</a></li>
-                            <li><a href="/public/confirmsaldo"><i class="fa fa-angle-double-right"></i> Konfirmasi TopUp</a></li>
-                            <li><a href="/public/confirmsaldo"><i class="fa fa-angle-double-right"></i> Konfirmasi Penarikan</a></li>
+                            {{-- <li><a href="/public/confirmsaldo"><i class="fa fa-angle-double-right"></i> Konfirmasi TopUp</a></li> --}}
+                            <li><a href="/public/confirmpenarikan"><i class="fa fa-angle-double-right"></i> Konfirmasi Penarikan</a></li>
                         </ul>
                     </li>
                     {{-- <li>
@@ -63,7 +63,7 @@
                         <a href="#" data-toggle="collapse" data-target="#submenu-4"><i class="fa fa-fw fa-bar-chart"></i>  Laporan <i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul id="submenu-4" class="collapse">
                             <li><a href="#"><i class="fa fa-angle-double-right"></i> Laporan Member</a></li>
-                            <li><a href="#"><i class="fa fa-angle-double-right"></i> Laporan Penjualan Paket</a></li>
+                            <li><a href="/public/laporanpenjualanpaket"><i class="fa fa-angle-double-right"></i> Laporan Penjualan Paket</a></li>
                             <li><a href="#"><i class="fa fa-angle-double-right"></i> Laporan Penjualan Produk</a></li>
                             <li><a href="#"><i class="fa fa-angle-double-right"></i> Laporan Konsultan Terlaris</a></li>
                         </ul>
@@ -81,7 +81,9 @@
             </div>
         </nav>
 
-        @yield("isipage")
+        <div class="container" style="margin-left: 10px;">
+            @yield("isipage")
+        </div>
 
     </div>
 </body>
@@ -236,11 +238,13 @@
 <script language='javascript'>
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();
-        $(".side-nav .collapse").on("hide.bs.collapse", function() {
-            $(this).prev().find(".fa").eq(1).removeClass("fa-angle-right").addClass("fa-angle-down");
-        });
-        $('.side-nav .collapse').on("show.bs.collapse", function() {
-            $(this).prev().find(".fa").eq(1).removeClass("fa-angle-down").addClass("fa-angle-right");
-        });
+        // $('.side-nav .collapse').on("show.bs.collapse", function() {
+        //     $(this).prev().find(".fa").eq(1).removeClass("fa-angle-down").addClass("fa-angle-right");
+        //     console.log("SANA");
+        // });
+        // $(".side-nav .collapse").on("hide.bs.collapse", function() {
+        //     $(this).prev().find(".fa").eq(1).removeClass("fa-angle-right").addClass("fa-angle-down");
+        //     console.log("SINI");
+        // });
     });
 </script>

@@ -12,7 +12,10 @@ use Illuminate\Http\Request;
 use App\MemberModel;
 use App\PaketModel;
 use App\JadwalModel;
+use App\RatingPaketKonsultanModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 
 class paketcontroller extends Controller
 {
@@ -96,6 +99,101 @@ class paketcontroller extends Controller
 		echo json_encode($return);
 	}
 
+    public function getFilterPaket(Request $req){
+        if($req->qry != ""){
+            $hsl = DB::select(DB::raw("SELECT * FROM paket WHERE ".$req->qry));
+        }
+        else{
+            $hsl = DB::select(DB::raw("SELECT * FROM paket"));
+        }
+        $model = new PaketModel;
+		$paket = $model->getPaket();
+        $rtn = [];
+        for($i = 0; $i < count($hsl); $i++){
+            for($j = 0; $j < count($paket); $j++){
+                if($hsl[$i]->id_paket == $paket[$j]->id_paket){
+                    $rtn[$i] = $paket[$j];
+                }
+            }
+        }
+        $return[0]['paket'] = $rtn;
+        echo json_encode($return);
+    }
+
+    public function getLaporanPaket(Request $req){
+        $model = new PaketModel();
+        $hsl = $model->getLaporanPaket($req->konsultan);
+        if(count($hsl) > 0)
+            $return[0]['datalaporan'] = $hsl;
+        else
+            $return[0]['datalaporan'] = "tidak ada data";
+        $hsl2 = $model->getLapPaketRating($req->konsultan);
+        $hsl3 = $model->getLaporanPaketTerfav($req->konsultan);
+        $return[0]['rating'] = $hsl2;
+        $return[0]['fav'] = $hsl3;
+        $laporan = $model->getSemuaPaketKonsultan($req->konsultan);
+        $return[0]['laporan'] = $laporan;
+        echo json_encode($return);
+    }
+
+    public function getDetailLaporan(Request $req){
+        $model = new PaketModel();
+        $arrMonth = [
+            'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
+          ];
+        for($i = 0; $i < count($arrMonth); $i++){
+            if($req->bulan == $arrMonth[$i]){
+                $bulan = $i+1;
+            }
+        }
+        $hsl = $model->getDetailLaporanPaket($req->konsultan,$bulan, $req->tahun);
+        if(count($hsl) > 0)
+            $return[0]['datalaporan'] = $hsl;
+        else
+            $return[0]['datalaporan'] = "tidak ada data";
+        $laporan = $model->getSemuaPaketKonsultan($req->konsultan);
+        $return[0]['laporan'] = $laporan;
+        echo json_encode($return);
+    }
+
+    public function searchPaketKonsultan(Request $req){
+        $model = new PaketModel();
+        if($req->cari != ""){
+            $paket = $model->searchPaketKonsultan($req->cari,$req->konsultan);
+        }
+        else{
+            $paket = $model->getPaketKonsultan($req->konsultan);
+        }
+        $return[0]['paket'] = $paket;
+		echo json_encode($return);
+    }
+
+    public function onOffPaket(Request $req){
+        $paket = PaketModel::find($req->paket);
+        if($paket->status == 0){
+            $paket->status = 1;
+        }
+        else if($paket->status == 1){
+            $paket->status = 0;
+        }
+        $paket->save();
+        $model = new PaketModel();
+		$paket = $model->getPaketKonsultan($req->id);
+		$return[0]['paket'] = $paket;
+		echo json_encode($return);
+    }
+
 	public function getPaketById(Request $req){
 		$model = new PaketModel();
 		$paket = $model->getPaketById($req->id);
@@ -118,4 +216,11 @@ class paketcontroller extends Controller
         $id = $req->id;
 		$model->updatePaket($id, $nama, $desc, $estimasi, $harga, $durasi);
 	}
+
+    public function getreviewpaket(Request $req){
+        $model = new RatingPaketKonsultanModel();
+        $hsl = $model->getReviewPaket($req->id);
+        $return[0]['review'] = $hsl;
+		echo json_encode($return);
+    }
 }

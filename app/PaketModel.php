@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\MemberModel;
+use Illuminate\Support\Facades\DB;
 
 class PaketModel extends Model
 {
@@ -39,6 +40,7 @@ class PaketModel extends Model
                         ->join('member','member.id',"=","paket.konsultan")
                         ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
                         ->where('konsultan','=',$id)
+                        ->where('paket.status','=',1)
                         ->get();
     }
 
@@ -46,6 +48,7 @@ class PaketModel extends Model
         return PaketModel::select('paket.*','jenispaket.background')
                         ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
 						->where('id_paket','=',$id)
+                        ->where('paket.status','=',1)
                         ->get();
     }
 
@@ -76,6 +79,16 @@ class PaketModel extends Model
                             ->get();
     }
 
+    public function searchPaketKonsultan($cari,$konsultan){
+        return PaketModel::select('paket.*', "member.nama","jenispaket.background")
+                            ->join('member','member.id',"=","paket.konsultan")
+                            ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
+                            ->where("nama_paket","like", "%".strtoupper($cari)."%")
+                            ->where('paket.status','=',1)
+                            ->where('paket.konsultan','=',$konsultan)
+                            ->get();
+    }
+
     public function blockPaket($id){
         $paket = PaketModel::find($id);
         $paket->status = 2;
@@ -87,4 +100,46 @@ class PaketModel extends Model
         $paket->status = 1;
         $paket->save();
     }
+
+    public function getLaporanPaket($konsultan){
+        return PaketModel::select('paket.id_paket',DB::raw('count(*) as jumlah'))
+                            ->join('hbelipaket','hbelipaket.idpaket','=','paket.id_paket')
+                            ->where('paket.konsultan','=',$konsultan)
+                            ->groupBy('paket.id_paket')
+                            ->get();
+    }
+
+    public function getDetailLaporanPaket($konsultan,$bulan,$tahun){
+        return PaketModel::select('paket.id_paket',DB::raw('count(*) as jumlah'))
+                            ->join('hbelipaket','hbelipaket.idpaket','=','paket.id_paket')
+                            ->where('paket.konsultan','=',$konsultan)
+                            ->whereMonth('hbelipaket.tanggalbeli','=',$bulan)
+                            ->whereYear('hbelipaket.tanggalbeli','=',$tahun)
+                            ->groupBy('paket.id_paket')
+                            ->get();
+    }
+
+    public function getLaporanPaketTerfav($konsultan){
+        return PaketModel::select('paket.id_paket',DB::raw('count(*) as jumlah'))
+                            ->join('hbelipaket','hbelipaket.idpaket','=','paket.id_paket')
+                            ->where('paket.konsultan','=',$konsultan)
+                            ->groupBy('paket.id_paket')
+                            ->orderBy('jumlah','DESC')
+                            ->get();
+    }
+
+    public function getLapPaketRating($konsultan){
+        return PaketModel::select('paket.id_paket','paket.rating')
+                            ->where('paket.konsultan','=',$konsultan)
+                            ->orderBy('paket.rating','DESC')
+                            ->get();
+    }
+
+    public function getSemuaPaketKonsultan($id){
+        return PaketModel::select('paket.*', "member.nama","jenispaket.background" )
+                       ->join('member','member.id',"=","paket.konsultan")
+                       ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
+                       ->where('konsultan','=',$id)
+                       ->get();
+   }
 }
