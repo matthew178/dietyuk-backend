@@ -13,7 +13,14 @@ class TrackingBeratModel extends Model
         'id',
         'username',
         'tanggal',
-        'berat'
+        'berat',
+        'keterangan'
     ];
     public $timestamps= false;
+
+    public function getHistoryBeratBadan($username){
+        return TrackingBeratModel::select("trackingberat.*")
+                                ->where("username","=",$username)
+                                ->get();
+    }
 }

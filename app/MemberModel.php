@@ -74,6 +74,7 @@ class MemberModel extends Model
             $tracking->username = $id;
             $tracking->tanggal = NOW();
             $tracking->berat = $berat;
+            $tracking->keterangan = "Update profile";
             $tracking->save();
             echo "masuk";
         }

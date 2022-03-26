@@ -210,4 +210,49 @@ class produkcontroller extends Controller
         }
         echo json_encode($return);
     }
+
+    public function getLaporanProduk(Request $req){
+        $model = new ProdukModel();
+        $hsl = $model->getLaporanProduk($req->konsultan);
+        if(count($hsl) > 0)
+            $return[0]['datalaporan'] = $hsl;
+        else
+            $return[0]['datalaporan'] = "tidak ada data";
+        $hsl2 = $model->getProdukFav($req->konsultan);
+        $return[0]['fav'] = $hsl2;
+        $laporan = $model->getProdukByKonsultan($req->konsultan);
+        $return[0]['laporan'] = $laporan;
+        echo json_encode($return);
+    }
+
+    public function getDetailLaporanProduk(Request $req){
+        $model = new ProdukModel();
+        $arrMonth = [
+            'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
+          ];
+        for($i = 0; $i < count($arrMonth); $i++){
+            if($req->bulan == $arrMonth[$i]){
+                $bulan = $i+1;
+            }
+        }
+        $hsl = $model->getDetailLaporanProduk($req->konsultan,$bulan, $req->tahun);
+        if(count($hsl) > 0)
+            $return[0]['datalaporan'] = $hsl;
+        else
+            $return[0]['datalaporan'] = "tidak ada data";
+        $laporan = $model->getProdukByKonsultan($req->konsultan);
+        $return[0]['laporan'] = $laporan;
+        echo json_encode($return);
+    }
 }

@@ -9,6 +9,8 @@ use App\laporanperkembangan;
 use App\MemberModel;
 use App\PaketModel;
 use App\RatingPaketKonsultanModel;
+use App\ReportKonsultanModel;
+use App\WithdrawModel;
 use Illuminate\Http\Request;
 
 class belipaketcontroller extends Controller
@@ -222,6 +224,28 @@ class belipaketcontroller extends Controller
         $temp = $model->aktivasiPaket($req->id);
         $return[0]['transaksi'] = $temp;
 		echo json_encode($return);
+    }
+
+    public function submitReport(Request $req){
+        $cek = new ReportKonsultanModel();
+        $hsl = $cek->getReport($req->idtrans);
+        if(count($hsl) > 0){
+            $return[0]['pesan'] = "Sudah pernah direport";
+        }
+        else{
+            $transaksi = hbelipaketmodel::find($req->idtrans);
+            $paket = PaketModel::find($transaksi->idpaket);
+            $report = new ReportKonsultanModel();
+            $report->id = 0;
+            $report->idtransaksi = $req->idtrans;
+            $report->tanggalreport = NOW();
+            $report->id_member = $transaksi->iduser;
+            $report->id_konsultan = $paket->konsultan;
+            $report->keterangan = $req->alasan;
+            $report->save();
+            $return[0]['pesan'] = "Berhasil report";
+        }
+        echo json_encode($return);
     }
 
     public function getDetailBeli(Request $req){

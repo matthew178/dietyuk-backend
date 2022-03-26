@@ -33,17 +33,10 @@
               <tr>
                 <td style="padding:10px;font-size:14px; width:100%;">
                     <p>Terima kasih telah melakukan pendaftaran pada aplikasi <b>Dietyuk!</b></p>
-                    <p>Silahkan melakukan konfirmasi email untuk dapat masuk kedalam aplikasi.</p><br>
-                    <form action="http://dietyukyuk.com/public/konfirmasiakun" method="post">
-                        @csrf
-                        <center>
-                            <input type="hidden" name="email" value="{{$data['email']}}">
-                            <p>
-                                <input type="submit" class="btn btn-warning" value="KONFIRMASI">
-                            </p>
-                        </center>
-                    </form><br><br>
-                    <p>Salam, <br>
+                    <p>Silahkan melakukan konfirmasi email untuk dapat masuk kedalam aplikasi.</p><br><br>
+                    <center><a href="https://dietyukyuk.com/public/konfirmasiakun/{{$data['email']}}"><button type="button" class="btn btn-primary">KONFIRMASI</button></a></center>
+                    <br><br>
+                    <p>Salam, </p><br>
                     <b>Tim Dietyuk!</b><br>
                  </td>
                 </tr>

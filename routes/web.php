@@ -26,10 +26,11 @@ Route::post('/kirim-email-verifikasi', "usercontroller@kirimEmailVerifikasi");
 Route::post('/resetPassword', "usercontroller@resetPass");
 Route::post('/tambahLibur',"usercontroller@tambahLibur");
 Route::post('/selesaikanTransaksi',"admincontroller@selesaikanTransaksi");
-Route::post('/konfirmasiakun',"usercontroller@konfirmasiAkun");
+Route::get('/konfirmasiakun/{email}',"usercontroller@konfirmasiAkun");
 Route::post('/kirimEmailAktivasi',"usercontroller@kirimEmailAktivasi");
 Route::post('/getDataCustomer',"usercontroller@getDataCustomer");
 Route::post('/sendNotification', "usercontroller@sendNotification");
+Route::post('/getHistoryBerat',"usercontroller@getHistoryBerat");
 
 //paket
 Route::post('/tambahpaket',"paketcontroller@tambahpaket");
@@ -65,6 +66,8 @@ Route::post('/getProdukCart',"produkcontroller@getProdukCart");
 Route::post('/editProduk',"produkcontroller@editproduk");
 Route::post('/searchProdukKonsultan', "produkcontroller@searchProdukKonsultan");
 Route::post('/searchfilterProduk',"produkcontroller@searchfilterProduk");
+Route::post('/getLaporanProduk',"produkcontroller@getLaporanProduk");
+Route::post('/getDetailLaporanProduk',"produkcontroller@getDetailLaporanProduk");
 
 Route::post('/tesRouting',"Controller@tes");
 
@@ -86,6 +89,9 @@ Route::post('/getTransaksiPaketKonsultan',"belipaketcontroller@getTransaksiPaket
 //review
 Route::post('/getreviewpaket',"paketcontroller@getreviewpaket");
 Route::post('/kirimRating',"belipaketcontroller@kirimRating");
+Route::post('/submitReport',"belipaketcontroller@submitReport");
+Route::post('/ubahStatusTestimoni',"paketcontroller@ubahStatusTestimoni");
+Route::post('/getTestiPaket',"paketcontroller@getTestiPaket");
 
 Route::get('/kirim-email', 'Controller@index');
 
@@ -106,7 +112,6 @@ Route::post('/getTransaksiKirimMember',"beliprodukcontroller@getTransaksiProdukK
 Route::post('/getTransaksiSelesaiMember',"beliprodukcontroller@getTransaksiProdukSelesaiMember");
 Route::post('/selesaikanPesananMember',"beliprodukcontroller@selesaikanPesananMember");
 
-
 //alamat
 Route::post('/tambahAlamat', "alamatcontroller@tambahAlamat");
 Route::post('/getDaftarAlamat',"alamatcontroller@daftarAlamat");
@@ -117,6 +122,7 @@ Route::get('/getProvinsi', "KotaController@getProvinsi");
 
 //kategori
 Route::post('/getkategori', "kategoricontroller@getallkategori");
+Route::post('/tambahkategori', "kategoricontroller@tambahkategori");
 
 //laporanperkembangan
 Route::post('/tambahPerkembangan', "laporanperkembangancontroller@tambahPerkembangan");
@@ -134,6 +140,7 @@ Route::post('/updatebukti',"saldocontroller@updatebukti");
 Route::post('/getHistoryTopup',"saldocontroller@getHistoryTopup");
 Route::post('/tambahsaldo',"saldocontroller@topupsaldo");
 Route::post('/kirimReqPenarikan',"saldocontroller@kirimReqPenarikan");
+Route::post('/getHistoryTopupLaporan',"saldocontroller@getHistoryTopupLaporan");
 
 //chat
 Route::post('/cekPesan',"chatcontroller@cekPesan");

@@ -108,4 +108,15 @@ class hbeliproduk extends Model
                             ->where("hbeliproduk.id","=",$idbeli)
                             ->get();
     }
+
+    public function getTransaksiProduk($user){
+        return hbeliproduk::select("hbeliproduk.*")
+                            ->where("hbeliproduk.pemesan",'=',$user)
+                            ->where(function ($query) {
+                                $query->where('hbeliproduk.status','=',0)
+                                  ->orWhere('hbeliproduk.status','=',1)
+                                  ->orWhere('hbeliproduk.status','=',2);
+                            })
+                            ->get();
+    }
 }

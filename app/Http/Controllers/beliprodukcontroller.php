@@ -6,6 +6,7 @@ use App\dbeliModel;
 use App\dbeliproduk;
 use App\hbeliproduk;
 use App\MemberModel;
+use App\SaldoModel;
 use Illuminate\Http\Request;
 
 class beliprodukcontroller extends Controller
@@ -185,6 +186,19 @@ class beliprodukcontroller extends Controller
         $model = hbeliproduk::find($req->idbeli);
         $model->status = 2;
         $model->save();
+        $member = MemberModel::find($model->konsultan);
+        $hitung = ($model->totalhargaproduk*2/100);
+        $member->saldo = $member->saldo + $model->total - $hitung;
+        $member->save();
+        $saldo = new SaldoModel();
+        $saldo->id = 0;
+        $saldo->id_user = $model->pemesan;
+        $saldo->saldo = $model->total - $hitung;
+        $saldo->status = 1;
+        $saldo->waktu = date('Y-m-d H:i:s');
+        $saldo->bank = "Penjualan Paket";
+        $saldo->buktitransfer = null;
+        $saldo->save();
     }
 
     public function getDetailTransProduk(Request $req){

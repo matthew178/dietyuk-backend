@@ -117,4 +117,18 @@ class hbelipaketmodel extends Model
                                     ->orderby("tanggalbeli","asc")
                                     ->get();
     }
+
+    public function getTransaksiUser($user){
+        return hbelipaketmodel::select("paket.nama_paket","hbelipaket.*","member.username")
+                                    ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
+                                    ->join("member","member.id","=","hbelipaket.iduser")
+                                    ->where("hbelipaket.iduser","=",$user)
+                                    ->where(function ($query) {
+                                        $query->where('hbelipaket.status','=',0)
+                                          ->orWhere('hbelipaket.status','=',1)
+                                          ->orWhere('hbelipaket.status','=',2)
+                                          ->orWhere('hbelipaket.status','=',5);
+                                    })
+                                    ->get();
+    }
 }

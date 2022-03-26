@@ -182,7 +182,16 @@ class paketcontroller extends Controller
     public function onOffPaket(Request $req){
         $paket = PaketModel::find($req->paket);
         if($paket->status == 0){
-            $paket->status = 1;
+            $jadwal = new JadwalModel();
+            $hari = $jadwal->cekJadwal($req->paket);
+            if($paket->status != 2){
+                if($paket->durasi == count($hari)){
+                    $paket->status = 1;
+                }
+                else{
+                    $paket->status = 3;
+                }
+        }
         }
         else if($paket->status == 1){
             $paket->status = 0;
@@ -222,5 +231,18 @@ class paketcontroller extends Controller
         $hsl = $model->getReviewPaket($req->id);
         $return[0]['review'] = $hsl;
 		echo json_encode($return);
+    }
+
+    public function ubahstatusTestimoni(Request $req){
+        $model = new RatingPaketKonsultanModel();
+        $hsl = $model->ubahStatusTestimoni($req->id, $req->status);
+    }
+
+    public function getTestiPaket(Request $req){
+        $model = new RatingPaketKonsultanModel();
+        $hsl = $model->getTestimoniPaket($req->paket);
+
+        $return[0]['testi'] = $hsl;
+        echo json_encode($return);
     }
 }

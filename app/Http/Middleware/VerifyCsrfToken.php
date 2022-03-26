@@ -101,6 +101,11 @@ class VerifyCsrfToken extends Middleware
         '/selesaikanPesananMember',
         '/onOffPaket',
         '/getLaporanPaket',
-        '/getDetailLaporan'
+        '/getDetailLaporan',
+        '/submitReport',
+        '/getHistoryBerat',
+        '/getLaporanProduk',
+        '/getDetailLaporanProduk','/getHistoryTopupLaporan',
+        '/ubahStatusTestimoni','/getTestiPaket'
     ];
 }

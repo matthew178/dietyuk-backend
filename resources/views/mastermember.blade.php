@@ -27,7 +27,6 @@
                                     <tr>
                                         <th>Username</th>
                                         <th>Nama</th>
-                                        {{-- <th>Jenis Kelamin</th> --}}
                                         <th>Nomor HP</th>
                                         <th>Role</th>
                                         <th>Saldo</th>

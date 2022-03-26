@@ -72,6 +72,9 @@ class admincontroller extends Controller
     }
 
     public function tambahjenispaket(Request $req){
+        $filefoto = $req->file('background');
+        $namafile = $filefoto->getClientOriginalName();
+        $filefoto->move("gambar/jenis_paket/",$namafile);
         $model = JenisPaketModel::all();
         $jum = count($model)+1;
         $kode = "JP";
@@ -89,7 +92,7 @@ class admincontroller extends Controller
         $jenisBaru->idjenispaket = $kode;
         $jenisBaru->namajenispaket = $nama;
         $jenisBaru->deskripsijenis = $req->deskripsi;
-        $jenisBaru->background = "";
+        $jenisBaru->background = $namafile;
         $jenisBaru->save();
         return redirect("/jenispaket");
     }

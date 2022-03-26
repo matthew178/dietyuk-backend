@@ -14,4 +14,8 @@ class kategoricontroller extends Controller
         $return[0]['kategori'] = $hsl;
         echo json_encode($return);
     }
+
+    public function tambahkategori(Request $req){
+        $model = new KategoriModel();
+    }
 }

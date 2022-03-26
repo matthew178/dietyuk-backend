@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\MemberModel;
 use App\TokenModel;
+use App\TrackingBeratModel;
 use Mail;
 
 class usercontroller extends Controller
@@ -100,9 +101,9 @@ class usercontroller extends Controller
 		echo json_encode($return);
     }
 
-    public function konfirmasiAkun(Request $req){
+    public function konfirmasiAkun($email){
         $model = new MemberModel();
-        $hsl = $model->memberEmail($req->email);
+        $hsl = $model->memberEmail($email);
         $hsl[0]->status = "Aktif";
         $hsl[0]->save();
         return view("selesai");
@@ -172,6 +173,7 @@ class usercontroller extends Controller
 		$return = [];
 		$model = new MemberModel();
 		$hsl = $model->loginUser($username, $password);
+
 		if(count($hsl) > 0){
             $hsl[0]->fbkey = $req->token;
             $hsl[0]->save();
@@ -185,6 +187,12 @@ class usercontroller extends Controller
 		}
 		echo json_encode($return);
 	}
+
+    public function getHistoryBerat(Request $req){
+        $tracking = new TrackingBeratModel();
+        $return[0]['databeratbadan'] = $tracking->getHistoryBeratBadan($req->user);
+        echo json_encode($return);
+    }
 
 	/*public function tambahfoto(Request $req){
 		$namafile = $req->m_filename;

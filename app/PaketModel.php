@@ -36,19 +36,17 @@ class PaketModel extends Model
     }
 
 	public function getPaketKonsultan($id){
-         return PaketModel::select('paket.*', "member.nama","jenispaket.background" )
-                        ->join('member','member.id',"=","paket.konsultan")
-                        ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
-                        ->where('konsultan','=',$id)
-                        ->where('paket.status','=',1)
-                        ->get();
+        return PaketModel::select('paket.*', "member.nama","jenispaket.background" )
+                    ->join('member','member.id',"=","paket.konsultan")
+                    ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
+                    ->where('konsultan','=',$id)
+                    ->get();
     }
 
 	public function getPaketById($id){
         return PaketModel::select('paket.*','jenispaket.background')
                         ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
 						->where('id_paket','=',$id)
-                        ->where('paket.status','=',1)
                         ->get();
     }
 

@@ -41,4 +41,19 @@ class RatingPaketKonsultanModel extends Model
                                             ->where('paket','=',$id)
                                             ->get();
     }
+
+    public function ubahStatusTestimoni($id, $status){
+        $jadwal = RatingPaketKonsultanModel::find($id);
+        $jadwal->testimoni = $status;
+        $jadwal->save();
+    }
+
+    public function getTestimoniPaket($idpaket){
+    return RatingPaketKonsultanModel::select('review_paket.*','member.username')
+                                    ->join('hbelipaket','hbelipaket.id','=','review_paket.idbeli')
+                                    ->join('member','member.id','=','hbelipaket.iduser')
+                                    ->where('hbelipaket.idpaket','=',$idpaket)
+                                    ->where('review_paket.testimoni','=',1)
+                                    ->get();
+    }
 }

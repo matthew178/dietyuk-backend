@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ProdukModel extends Model
 {
@@ -153,5 +154,33 @@ class ProdukModel extends Model
                         ->where('produk.harga',"<=",$hakhir)
                         ->orwhere('produk.harga',"<=",$hakhir)
                         ->get();
+    }
+
+    public function getLaporanProduk($konsultan){
+        return ProdukModel::select('produk.kodeproduk',DB::raw('count(*) as jumlah'))
+                            ->join('dbeliproduk','dbeliproduk.idproduk','=','produk.kodeproduk')
+                            ->where('produk.konsultan','=',$konsultan)
+                            ->groupBy('produk.kodeproduk')
+                            ->get();
+    }
+
+    public function getProdukFav($konsultan){
+        return ProdukModel::select('produk.kodeproduk',DB::raw('count(*) as jumlah'))
+                            ->join('dbeliproduk','dbeliproduk.idproduk','=','produk.kodeproduk')
+                            ->where('produk.konsultan','=',$konsultan)
+                            ->groupBy('produk.kodeproduk')
+                            ->orderBy('jumlah','DESC')
+                            ->get();
+    }
+
+    public function getDetailLaporanProduk($konsultan,$bulan,$tahun){
+        return ProdukModel::select('produk.kodeproduk',DB::raw('count(*) as jumlah'))
+                            ->join('dbeliproduk','dbeliproduk.idproduk','=','produk.kodeproduk')
+                            ->join('hbeliproduk','hbeliproduk.id','=','dbeliproduk.idbeli')
+                            ->where('produk.konsultan','=',$konsultan)
+                            ->whereMonth('hbeliproduk.waktubeli','=',$bulan)
+                            ->whereYear('hbeliproduk.waktubeli','=',$tahun)
+                            ->groupBy('produk.kodeproduk')
+                            ->get();
     }
 }

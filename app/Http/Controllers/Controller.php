@@ -32,7 +32,7 @@ class Controller extends BaseController
     }
 
     function tes(Request $req) {
-
+        return view("konfirmasiakun");
     }
 
 

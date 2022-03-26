@@ -17,4 +17,10 @@ class ReportKonsultanModel extends Model
         'keterangan'
     ];
     public $timestamps= false;
+
+    public function getReport($idtrans){
+        return ReportKonsultanModel::select("report_konsultan.*")
+                                    ->where('idtransaksi','=',$idtrans)
+                                    ->get();
+    }
 }

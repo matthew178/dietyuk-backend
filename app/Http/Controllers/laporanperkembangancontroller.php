@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\hbelipaketmodel;
 use App\laporanperkembangan;
 use App\MemberModel;
+use App\PaketModel;
+use App\TrackingBeratModel;
 use Illuminate\Http\Request;
 
 class laporanperkembangancontroller extends Controller
@@ -58,6 +61,37 @@ class laporanperkembangancontroller extends Controller
         $member = MemberModel::find($req->user);
         $member->berat = $req->berat;
         $member->save();
+        $hasil = TrackingBeratModel::where('username', '=', $req->user)
+								->orderby('tanggal')
+								->get();
+        $status = 3;
+        $beratsementara = 0;
+        if(count($hasil) > 0){
+            for($i = 0; $i < count($hasil); $i++){
+                $beratsementara = $hasil[$i]->berat;
+            }
+            echo $beratsementara." ".$req->berat;
+            if($req->berat > $beratsementara){
+                $status = 2;
+            }
+            else if($req->berat < $beratsementara){
+                $status = 1;
+            }
+            else{
+                $status = 3;
+            }
+        }
+        $model = new TrackingBeratModel();
+        $model->id = 0;
+        $model->username = $req->user;
+        $model->tanggal = $laporan->tanggal;
+        $model->berat = $req->berat;
+        $transbeli = hbelipaketmodel::find($laporan->idbeli);
+        $paket = PaketModel::find($transbeli->idpaket);
+        $konsultan = MemberModel::find($paket->konsultan);
+        $model->keterangan = "Program diet ".$paket->nama_paket." by ".$konsultan->nama;
+        $model->status = $status;
+        $model->save();
         // $res = laporanperkembangan::where('idbeli','=',$req->idbeli)->get();
         // $prevberat = 0;
         // $ctr = 0;
