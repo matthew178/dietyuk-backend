@@ -111,10 +111,14 @@ class hbelipaketmodel extends Model
     public function getdetailtransaksibulan($year, $month){
         return hbelipaketmodel::select("paket.nama_paket","member.username","hbelipaket.*")
                                     ->join("paket","paket.id_paket","=","hbelipaket.idpaket")
-                                    ->join("member","member.id","=","hbelipaket.iduser")
-                                    ->whereYear("hbelipaket.tanggalbeli" , $year)
-                                    ->whereMonth("hbelipaket.tanggalbeli", $month)
-                                    ->orderby("tanggalbeli","asc")
+                                    ->join("member","member.id","=","paket.konsultan")
+                                    ->whereYear("hbelipaket.tanggalselesai" , $year)
+                                    ->whereMonth("hbelipaket.tanggalselesai", $month)
+                                    ->where(function ($query) {
+                                        $query->where('hbelipaket.status','=',2)
+                                            ->orWhere('hbelipaket.status','=',5);
+                                    })
+                                    ->orderby("tanggalselesai","asc")
                                     ->get();
     }
 

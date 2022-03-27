@@ -69,7 +69,7 @@ Route::post('/searchfilterProduk',"produkcontroller@searchfilterProduk");
 Route::post('/getLaporanProduk',"produkcontroller@getLaporanProduk");
 Route::post('/getDetailLaporanProduk',"produkcontroller@getDetailLaporanProduk");
 
-Route::post('/tesRouting',"Controller@tes");
+Route::get('/tesRouting',"Controller@tes");
 
 //belipaket
 Route::post('/belipaket', "belipaketcontroller@belipaket");
@@ -159,18 +159,24 @@ Route::post('/konfirmasisaldo', "admincontroller@konfirmasisaldo");
 Route::post('/konfirmasipenarikan',"admincontroller@konfirmasipenarikan");
 
 //admin -> get
-Route::get('/admin', function () {
-    return view('dashboard');});
-Route::get('/jenispaket',"admincontroller@jenispaket");
-Route::get('/jenisproduk',"admincontroller@jenisproduk");
-Route::get('/confirmkonsultan',"admincontroller@confirmkonsultan");
-Route::get('/confirmsaldo',"admincontroller@confirmsaldo");
-Route::get('/confirmpenarikan',"admincontroller@confirmpenarikan");
-Route::get('/mastermember',"admincontroller@mastermember");
-Route::get('/masterpaket',"admincontroller@masterpaket");
-Route::get('/block/{id}',"admincontroller@blockuser");
-Route::get('/aktifkan/{id}',"admincontroller@aktifkanuser");
-Route::get('/blockpaket/{id}',"admincontroller@blockpaket");
-Route::get('/aktifkanpaket/{id}',"admincontroller@aktifkanpaket");
-Route::get('/laporanpenjualanpaket',"admincontroller@laporanpenjualanpaket");
-Route::get('/detailbulan',"admincontroller@detailbulanpaket");
+// Route::group(['middleware' => ['CekSessionAdmin']], function () {
+    Route::get('/admin', function () {
+        return view('dashboard');});
+    Route::get('/jenispaket',"admincontroller@jenispaket");
+    Route::get('/jenisproduk',"admincontroller@jenisproduk");
+    Route::get('/confirmkonsultan',"admincontroller@confirmkonsultan");
+    Route::get('/confirmsaldo',"admincontroller@confirmsaldo");
+    Route::get('/confirmpenarikan',"admincontroller@confirmpenarikan");
+    Route::get('/mastermember',"admincontroller@mastermember");
+    Route::get('/masterpaket',"admincontroller@masterpaket");
+    Route::get('/block/{id}',"admincontroller@blockuser");
+    Route::get('/aktifkan/{id}',"admincontroller@aktifkanuser");
+    Route::get('/blockpaket/{id}',"admincontroller@blockpaket");
+    Route::get('/aktifkanpaket/{id}',"admincontroller@aktifkanpaket");
+    Route::get('/laporanpenjualanpaket',"admincontroller@laporanpenjualanpaket");
+    Route::get('/detailbulan',"admincontroller@detailbulanpaket");
+    Route::get('/detailbulanproduk',"admincontroller@detailbulanproduk");
+    Route::get('/laporanpenjualanproduk',"admincontroller@laporanpenjualanproduk");
+    Route::get('/getReportKonsultanAdmin',"admincontroller@reportKonsultanAdmin");
+// });
+

@@ -23,4 +23,10 @@ class ReportKonsultanModel extends Model
                                     ->where('idtransaksi','=',$idtrans)
                                     ->get();
     }
+
+    public function getAllReportKonsultan(){
+        return ReportKonsultanModel::select("report_konsultan.*")
+                                    ->where('status','=',0)
+                                    ->get();
+    }
 }

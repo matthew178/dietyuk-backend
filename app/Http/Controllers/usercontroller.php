@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\ChatModel;
 use App\LiburModel;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -94,6 +95,17 @@ class usercontroller extends Controller
 				$memberBaru->foto = "wanita.png";
 			}
 			$memberBaru->save();
+            $chatbaru = new ChatModel;
+            $chatbaru->id = 0;
+            $chatbaru->username1 = $request->username;
+            $chatbaru->username2 = "11";
+            $chatbaru->save();
+            $chatbaru = new ChatModel;
+            $chatbaru->id = 0;
+            $chatbaru->username1 = "11";
+            $chatbaru->username2 = $request->username;
+            $chatbaru->save();
+
 
 			$return[0]['status'] = "sukses";
 		}

@@ -42,6 +42,10 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+
+        'CekSessionAdmin' => [
+            \App\Http\Middleware\CekSessionAdmin::class
+        ]
     ];
 
     /**

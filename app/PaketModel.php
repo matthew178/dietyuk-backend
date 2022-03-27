@@ -44,8 +44,9 @@ class PaketModel extends Model
     }
 
 	public function getPaketById($id){
-        return PaketModel::select('paket.*','jenispaket.background')
+        return PaketModel::select('paket.*','jenispaket.background','member.username')
                         ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
+                        ->join('member','member.id','=','paket.konsultan')
 						->where('id_paket','=',$id)
                         ->get();
     }

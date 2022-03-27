@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\hbelipaketmodel;
+use App\hbeliproduk;
 use App\JadwalModel;
 use Illuminate\Http\Request;
 use App\KategoriModel;
@@ -14,6 +15,7 @@ use App\PenarikanModel;
 use App\SaldoModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class admincontroller extends Controller
 {
@@ -26,6 +28,7 @@ class admincontroller extends Controller
         $this->selesaikanTransaksi();
         if(count($hsl) > 0){
             if($hsl[0]['role'] == "admin"){
+                Session::put('user',$hsl);
                 return view("dashboard");
             }
             else{
@@ -256,9 +259,34 @@ class admincontroller extends Controller
         return view("laporanpenjualanpaket",["tahun" => date("Y"),"datatahun" => $hsl], compact('data'));
     }
 
+    public function laporanpenjualanproduk(Request $req){
+        $year = Carbon::now()->year();
+        $hsl = DB::select(DB::raw("SELECT COUNT(*) as jumlah, YEAR(`waktubeli`) as tahun, MONTH(`waktubeli`) as bulan FROM `hbeliproduk` WHERE YEAR(`waktubeli`) = ".date("Y")." GROUP BY MONTH(`waktubeli`),YEAR(`waktubeli`)"));
+        $data = "";
+        $bulans = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+        $arr = [];
+        foreach ($bulans as $bulan) {
+            $arr[] = (object)array("bulan" => $bulan, "jumlah" => 0);
+        }
+        for($i = 0; $i < count($hsl); $i++){
+            $arr[$hsl[$i]->bulan-1]->jumlah = $hsl[$i]->jumlah;
+        }
+        for($i = 0; $i < count($arr); $i++){
+            $data .= "['".$arr[$i]->bulan."',".$arr[$i]->jumlah."],";
+        }
+        $hsl = DB::select(DB::raw("SELECT DISTINCT YEAR(`waktubeli`) as tahun FROM `hbeliproduk` ORDER BY YEAR(`waktubeli`) DESC"));
+        return view("laporanpenjualanproduk",["tahun" => date("Y"),"datatahun" => $hsl], compact('data'));
+    }
+
     public function detailbulanpaket(Request $req){
         $model = new hbelipaketmodel();
         $hsl = $model->getdetailtransaksibulan($req->tahun, $req->bulan);
+        return response()->json($hsl);
+    }
+
+    public function detailbulanproduk(Request $req){
+        $model = new hbeliproduk();
+        $hsl = $model->getdetailtransaksibulanproduk($req->tahun, $req->bulan);
         return response()->json($hsl);
     }
 

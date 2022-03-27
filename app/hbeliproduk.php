@@ -119,4 +119,19 @@ class hbeliproduk extends Model
                             })
                             ->get();
     }
+
+    public function getdetailtransaksibulanproduk($year, $month){
+        return hbeliproduk::select("hbeliproduk.*")
+                                ->join("member","member.id","=","hbeliproduk.konsultan")
+                                ->join("member","member.id","=","hbeliproduk.pemesan")
+                                ->whereYear("hbeliproduk.waktubeli" , $year)
+                                ->whereMonth("hbeliproduk.waktubeli", $month)
+                                ->where(function ($query) {
+                                    $query->where('hbeliproduk.status','=',1)
+                                        ->orWhere('hbeliproduk.status','=',2);
+                                })
+                                ->orderby("waktubeli","asc")
+                                ->get();
+    }
+
 }
