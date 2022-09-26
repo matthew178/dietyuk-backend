@@ -29,7 +29,13 @@ Route::post('/selesaikanTransaksi',"admincontroller@selesaikanTransaksi");
 Route::get('/konfirmasiakun/{email}',"usercontroller@konfirmasiAkun");
 Route::post('/kirimEmailAktivasi',"usercontroller@kirimEmailAktivasi");
 Route::post('/getDataCustomer',"usercontroller@getDataCustomer");
-Route::post('/sendNotification', "usercontroller@sendNotification");
+// Route::post('/sendNotification', "usercontroller@sendNotification");
+Route::post('/dailycheckup', "usercontroller@dailycheckup");
+Route::post('/makanpagi', "usercontroller@ingatMakanPagi");
+Route::post('/makansiang', "usercontroller@ingatMakanSiang");
+Route::post('/makanmalam', "usercontroller@ingatMakanMalam");
+Route::post('/olahraga', "usercontroller@olahraga");
+
 Route::post('/getHistoryBerat',"usercontroller@getHistoryBerat");
 
 //paket
@@ -158,8 +164,10 @@ Route::post('/tolak',"admincontroller@tolakkonsultan");
 Route::post('/konfirmasisaldo', "admincontroller@konfirmasisaldo");
 Route::post('/konfirmasipenarikan',"admincontroller@konfirmasipenarikan");
 
+Route::get('/logoutadmin',"admincontroller@logout");
+
 //admin -> get
-// Route::group(['middleware' => ['CekSessionAdmin']], function () {
+Route::group(['middleware' => ['CekSessionAdmin']], function () {
     Route::get('/admin', function () {
         return view('dashboard');});
     Route::get('/jenispaket',"admincontroller@jenispaket");
@@ -174,9 +182,17 @@ Route::post('/konfirmasipenarikan',"admincontroller@konfirmasipenarikan");
     Route::get('/blockpaket/{id}',"admincontroller@blockpaket");
     Route::get('/aktifkanpaket/{id}',"admincontroller@aktifkanpaket");
     Route::get('/laporanpenjualanpaket',"admincontroller@laporanpenjualanpaket");
-    Route::get('/detailbulan',"admincontroller@detailbulanpaket");
-    Route::get('/detailbulanproduk',"admincontroller@detailbulanproduk");
     Route::get('/laporanpenjualanproduk',"admincontroller@laporanpenjualanproduk");
     Route::get('/getReportKonsultanAdmin',"admincontroller@reportKonsultanAdmin");
-// });
+    Route::get('/chat',"admincontroller@listchat");
+    Route::get('/blockkonsultan/{id}',"admincontroller@blockkonsultan");
+    Route::get('/ubahStatusReport/{id}',"admincontroller@ubahstatusreport");
+});
+
+    Route::get('/detailbulanproduk/{tahun}/{bulan}',"admincontroller@detailbulanproduk");
+    Route::get('/getCountKonsultan',"admincontroller@getKonsultanTerlaris");
+    Route::get('/detailbulan/{tahun}/{bulan}',"admincontroller@detailbulanpaket");
+
+
+// Route::post('/detailbulanproduk',"admincontroller@detailbulanproduk");
 

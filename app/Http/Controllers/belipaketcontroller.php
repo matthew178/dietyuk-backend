@@ -80,6 +80,14 @@ class belipaketcontroller extends Controller
         $model = new hbelipaketmodel();
         $hsl = $model->getBeliKonsultan($req->user);
 		$return[0]['transaksi'] = $hsl;
+        $hitung = [];
+        for($i = 0; $i < count($hsl); $i++){
+            $detail = new dbeliModel();
+            $hsl1 = $detail->getCountSeharusnya($hsl[$i]->id);
+            $hsl2 = $detail->getCountCentang($hsl[$i]->id);
+            $hitung[$i] = (count($hsl2)/count($hsl1));
+        }
+        $return[0]['hitung'] = $hitung;
 		echo json_encode($return);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ChatModel;
 use App\hbelipaketmodel;
 use App\hbeliproduk;
 use App\JadwalModel;
@@ -12,6 +13,8 @@ use App\LiburModel;
 use App\MemberModel;
 use App\PaketModel;
 use App\PenarikanModel;
+use App\RatingPaketKonsultanModel;
+use App\ReportKonsultanModel;
 use App\SaldoModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -116,13 +119,14 @@ class admincontroller extends Controller
                 $member->save();
                 $saldo = new SaldoModel();
                 $saldo->id = 0;
-                $saldo->id_user = $hsl[$i]->iduser;
+                $saldo->id_user = $paket->konsultan;
                 $saldo->saldo = $hsl[$i]->totalharga - $hitung;
                 $saldo->status = 1;
                 $saldo->waktu = date('Y-m-d H:i:s');
                 $saldo->bank = "Paket Selesai";
                 $saldo->buktitransfer = null;
                 $saldo->save();
+                echo "sini";
             }
         }
         $libur = new LiburModel();
@@ -162,14 +166,23 @@ class admincontroller extends Controller
 
     public function mastermember(){
         $this->selesaikanTransaksi();
-        return view("mastermember",["member" => MemberModel::all()]);
+        $member = new MemberModel();
+        $hsl = $member->getMemberTanpaAdmin();
+        return view("mastermember",["member" => $hsl]);
     }
 
     public function masterpaket(){
         $model = new PaketModel;
-		$paket = $model->getPaket();
+		$paket = $model->getAllPaketAdmin();
         $this->selesaikanTransaksi();
-        return view("masterpaket",["paket" => PaketModel::all()]);
+        return view("masterpaket",["paket" => $paket]);
+    }
+
+    public function reportKonsultanAdmin(){
+        $report = new ReportKonsultanModel();
+        $hsl = $report->getAllReportKonsultan();
+        $this->selesaikanTransaksi();
+        return view("listreport",["data" => $hsl]);
     }
 
     public function searchPaket(Request $req){
@@ -237,7 +250,29 @@ class admincontroller extends Controller
     public function blockuser($id){
         $model = new MemberModel();
         $user = $model->blockUser($id);
-        return view("mastermember",["member"=>MemberModel::all()]);
+        $member = new MemberModel();
+        $hsl = $member->getMemberTanpaAdmin();
+        return view("mastermember",["member" => $hsl]);
+    }
+
+    public function blockkonsultan($id){
+        $cari = ReportKonsultanModel::find($id);
+        $cari->status = 1;
+        $cari->save();
+        $model = new MemberModel();
+        $user = $model->blockUser($cari->id_konsultan);
+        $report = new ReportKonsultanModel();
+        $hsl = $report->getAllReportKonsultan();
+        return view("listreport",["data" => $hsl]);
+    }
+
+    public function ubahstatusreport($id){
+        $cari = ReportKonsultanModel::find($id);
+        $cari->status = 2;
+        $cari->save();
+        $report = new ReportKonsultanModel();
+        $hsl = $report->getAllReportKonsultan();
+        return view("listreport",["data" => $hsl]);
     }
 
     public function laporanpenjualanpaket(Request $req){
@@ -278,22 +313,41 @@ class admincontroller extends Controller
         return view("laporanpenjualanproduk",["tahun" => date("Y"),"datatahun" => $hsl], compact('data'));
     }
 
-    public function detailbulanpaket(Request $req){
+    public function detailbulanpaket($tahun, $bulan){
         $model = new hbelipaketmodel();
-        $hsl = $model->getdetailtransaksibulan($req->tahun, $req->bulan);
+        $hsl = $model->getdetailtransaksibulan($tahun, $bulan);
         return response()->json($hsl);
     }
 
-    public function detailbulanproduk(Request $req){
+    public function detailbulanproduk($tahun, $bulan){
         $model = new hbeliproduk();
-        $hsl = $model->getdetailtransaksibulanproduk($req->tahun, $req->bulan);
+        $hsl = $model->getdetailtransaksibulanproduk($tahun, $bulan);
         return response()->json($hsl);
+    }
+
+    public function getKonsultanTerlaris(){
+        $model = new MemberModel();
+        $hsl = $model->getCountKonsultan();
+        return view("laporanmember",["data" => $hsl]);
+    }
+
+    public function logout(Request $request){
+        $request->session()->flush();
+        return redirect('/');
     }
 
     public function aktifkanuser($id){
         $model = new MemberModel();
         $user = $model->aktifkanUser($id);
-        return view("mastermember",["member"=>MemberModel::all()]);
+        $member = new MemberModel();
+        $hsl = $member->getMemberTanpaAdmin();
+        return view("mastermember",["member" => $hsl]);
+    }
+
+    public function listchat(){
+        $chat = new ChatModel();
+        $hsl = $chat->getListChatUser("11");
+        return view("chat",['members' => $hsl]);
     }
 
     public function blockpaket($id){

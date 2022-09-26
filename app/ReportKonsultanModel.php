@@ -25,8 +25,10 @@ class ReportKonsultanModel extends Model
     }
 
     public function getAllReportKonsultan(){
-        return ReportKonsultanModel::select("report_konsultan.*")
-                                    ->where('status','=',0)
+        return ReportKonsultanModel::select("report_konsultan.*","m.username as pelapor","m2.username as konsultan")
+                                    ->join('member as m', 'm.id','=','report_konsultan.id_member')
+                                    ->join('member as m2', 'm2.id','=','report_konsultan.id_konsultan')
+                                    ->where('report_konsultan.status','=',0)
                                     ->get();
     }
 }

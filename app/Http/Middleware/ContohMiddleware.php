@@ -3,9 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Session;
 
-class CekSessionAdmin
+class ContohMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,12 +15,6 @@ class CekSessionAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (!Session::has('user')) {
-            return redirect('/')->with('message', 'Login dulu');
-        }
-        else {
-            return $next($request);
-        }
-
+        return $next($request);
     }
 }

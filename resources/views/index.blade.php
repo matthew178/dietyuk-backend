@@ -15,8 +15,8 @@
     <!-- Login Form -->
     <form action="/public/loginadmin" method="post">
         @csrf
-      <input type="text" id="uname" class="fadeIn second" name="uname" placeholder="Username">
-      <input type="text" id="password" class="fadeIn third" name="password" placeholder="Password">
+      <input type="text" id="uname" class="form-control" name="uname" placeholder="Username"><br>
+      <input type="password" id="password" class="form-control" name="password" placeholder="Password">
       <input type="submit" class="fadeIn fourth" value="Log In">
     </form>
 
@@ -142,7 +142,7 @@ input[type=button]:active, input[type=submit]:active, input[type=reset]:active  
   transform: scale(0.95);
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
   background-color: #f6f6f6;
   border: none;
   color: #0d0d0d;

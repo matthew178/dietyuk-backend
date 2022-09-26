@@ -122,10 +122,8 @@ class hbeliproduk extends Model
 
     public function getdetailtransaksibulanproduk($year, $month){
         return hbeliproduk::select("hbeliproduk.*")
-                                ->join("member","member.id","=","hbeliproduk.konsultan")
-                                ->join("member","member.id","=","hbeliproduk.pemesan")
-                                ->whereYear("hbeliproduk.waktubeli" , $year)
-                                ->whereMonth("hbeliproduk.waktubeli", $month)
+                                ->whereYear("hbeliproduk.waktubeli", '=' , (int)$year)
+                                ->whereMonth("hbeliproduk.waktubeli", '=' ,(int)$month)
                                 ->where(function ($query) {
                                     $query->where('hbeliproduk.status','=',1)
                                         ->orWhere('hbeliproduk.status','=',2);

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class MemberModel extends Model
 {
@@ -41,10 +42,37 @@ class MemberModel extends Model
                         ->get();
     }
 
+    public function getListKonsultan(){
+        return MemberModel::select("member.*")
+                        ->where('role','=','konsultan')
+                        ->get();
+    }
+
+    public function getListMember(){
+        return MemberModel::select("member.*")
+                        ->where('role','=','member')
+                        ->get();
+    }
+
 	public function getProfile($id){
         return MemberModel::select('member.*')
                         ->where('id','=',$id)
                         ->get();
+    }
+
+    public function getMemberTanpaAdmin(){
+        return MemberModel::select('member.*')
+                        ->where('role','!=','admin')
+                        ->get();
+    }
+
+    public function getCountKonsultan(){
+        return MemberModel::select('member.username', DB::raw('count(*) as jumlah'))
+                            ->join('paket','paket.konsultan','=','member.id')
+                            ->join('hbelipaket','hbelipaket.idpaket','=','paket.id_paket')
+                            ->groupBy('member.username')
+                            ->orderBy("jumlah",'DESC')
+                            ->get();
     }
 
     public function getDataCustomer($id){

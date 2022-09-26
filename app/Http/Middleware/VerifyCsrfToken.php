@@ -106,6 +106,12 @@ class VerifyCsrfToken extends Middleware
         '/getHistoryBerat',
         '/getLaporanProduk',
         '/getDetailLaporanProduk','/getHistoryTopupLaporan',
-        '/ubahStatusTestimoni','/getTestiPaket'
+        '/ubahStatusTestimoni','/getTestiPaket',
+        '/detailbulanproduk',
+        '/olahraga',
+        '/dailycheckup',
+        '/makanpagi',
+        '/makansiang',
+        '/makanmalam',
     ];
 }

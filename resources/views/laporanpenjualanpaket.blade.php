@@ -6,9 +6,15 @@
     {{-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> --}}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src='https://code.jquery.com/jquery-3.5.1.js'></script>
+    <script src='https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js'></script>
+    <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+
     <script type="text/javascript">
     // google.charts.load('current', {'packages':['corechart']});
     //   google.charts.setOnLoadCallback(drawChart);
@@ -65,7 +71,7 @@
     {{-- <br><br><br> --}}
 
     <br>
-    <h1>Transaksi Bulan <span id="tampilbulan">Januari</span> Tahun <span id="tampiltahun">{{$tahun}}</span></h1><br>
+    <h1>Transaksi Bulan <span id="tampilbulan">Maret</span> Tahun <span id="tampiltahun">{{$tahun}}</span></h1><br>
     <div class="tabeldetail">
         <div class="table-responsive" id="sailorTableArea">
             <table id="sailorTable" name="sailorTable" class="table table-striped table-bordered" width="100%">
@@ -79,12 +85,13 @@
 
 <script language='javascript'>
     $(document).ready(function(){
+		$('#sailorTable').DataTable();
         var sekarang = new Date();
         var tb = "<thead><th>Nama Paket</th><th>Konsultan</th><th>Tanggal Penjualan</th><th>Total</th><th>Keuntungan</th></thead><tbody>";
         $.ajax({
             type:'get',
-            url:'{!!URL::to('detailbulan')!!}',
-            data:{'tahun':sekarang.getFullYear(), "bulan":sekarang.getMonth()+1},
+            url:`{!!URL::to('detailbulan')!!}/${sekarang.getFullYear()}/${sekarang.getMonth()+1}`,
+            // data:{'tahun':sekarang.getFullYear(), "bulan":sekarang.getMonth()+1},
             success:function(data){
                 var untung = 0;
                 for(var i = 0; i < data.length; i++){
@@ -104,15 +111,15 @@
         });
         $("#tahuns").on('change', function() {
             var tahun = $("#tahuns").val();
-            var id = $(this).val();
+            var id = $("#bulans").val();
             var bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
             var jum = parseInt(id)-1;
             $('#tampiltahun').html(tahun);
             var tb = "<thead><th>Nama Paket</th><th>Konsultan</th><th>Tanggal Penjualan</th><th>Total</th><th>Keuntungan</th></thead><tbody>";
             $.ajax({
                 type:'get',
-                url:'{!!URL::to('detailbulan')!!}',
-                data:{'tahun':tahun, "bulan":id},
+                url:`{!!URL::to('detailbulan')!!}/${tahun}/${id}`,
+                // data:{'tahun':sekarang.getFullYear(), "bulan":sekarang.getMonth()+1},
                 success:function(data){
                     var untung = 0;
                     for(var i = 0; i < data.length; i++){
@@ -140,8 +147,8 @@
             var tb = "<thead><th>Nama Paket</th><th>Konsultan</th><th>Tanggal Penjualan</th><th>Total</th><th>Keuntungan</th></thead><tbody>";
             $.ajax({
                 type:'get',
-                url:'{!!URL::to('detailbulan')!!}',
-                data:{'tahun':tahun, "bulan":id},
+                url:`{!!URL::to('detailbulan')!!}/${tahun}/${id}`,
+                // data:{'tahun':sekarang.getFullYear(), "bulan":sekarang.getMonth()+1},
                 success:function(data){
                     var untung = 0;
                     for(var i = 0; i < data.length; i++){

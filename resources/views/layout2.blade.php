@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
     <title>Admin</title>
 </head>
 <body>
@@ -26,10 +26,9 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin User <b class="fa fa-angle-down"></b></a>
                     <ul class="dropdown-menu">
-                        {{-- <li><a href="#"><i class="fa fa-fw fa-user"></i> Edit Profile</a></li> --}}
-                        <li><a href="#"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
+                        {{-- <li><a href="#"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
+                        <li class="divider"></li> --}}
+                        <li><a href="/public/logoutadmin"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -62,11 +61,16 @@
                     <li>
                         <a href="#" data-toggle="collapse" data-target="#submenu-4"><i class="fa fa-fw fa-bar-chart"></i>  Laporan <i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul id="submenu-4" class="collapse">
-                            {{-- <li><a href="#"><i class="fa fa-angle-double-right"></i> Laporan Member</a></li> --}}
                             <li><a href="/public/laporanpenjualanpaket"><i class="fa fa-angle-double-right"></i> Laporan Penjualan Paket</a></li>
                             <li><a href="/public/laporanpenjualanproduk"><i class="fa fa-angle-double-right"></i> Laporan Penjualan Produk</a></li>
-                            <li><a href="#"><i class="fa fa-angle-double-right"></i> Laporan Konsultan Terlaris</a></li>
+                            <li><a href="/public/getCountKonsultan"><i class="fa fa-angle-double-right"></i> Laporan Konsultan Terlaris</a></li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="/public/getReportKonsultanAdmin" data-toggle="collapse" data-target="#submenu-5"><i class="fa fa-exclamation-circle"></i>  Daftar Pengaduan</a>
+                    </li>
+                    <li>
+                        <a href="/public/chat" data-toggle="collapse" data-target="#submenu-6"><i class="fa fa-commenting"></i> Pesan</a>
                     </li>
                 </ul>
             </div>
@@ -79,6 +83,7 @@
     </div>
 </body>
 </html>
+
 
 <style>
 @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
@@ -224,7 +229,6 @@
     padding: 5px 15px;
 }
 </style>
-
 
 <script language='javascript'>
     $(document).ready(function(){

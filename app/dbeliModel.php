@@ -53,4 +53,19 @@ class dbeliModel extends Model
                         ->distinct()
                         ->get();
     }
+
+    public function getCountCentang($idbeli){
+        return dbeliModel::select("dbelipaket.*")
+                        ->where("tanggal",'<=',NOW())
+                        ->where('idbeli','=',$idbeli)
+                        ->where('status','=',1)
+                        ->get();
+    }
+
+    public function getCountSeharusnya($idbeli){
+        return dbeliModel::select("dbelipaket.*")
+                        ->where("tanggal","<=",NOW())
+                        ->where("idbeli","=",$idbeli)
+                        ->get();
+    }
 }

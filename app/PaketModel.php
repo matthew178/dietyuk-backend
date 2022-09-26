@@ -35,6 +35,13 @@ class PaketModel extends Model
                         ->get();
     }
 
+    public function getAllPaketAdmin(){
+        return PaketModel::select('paket.*', "member.nama","jenispaket.background")
+                        ->join('member','member.id',"=","paket.konsultan")
+                        ->join('jenispaket','jenispaket.idjenispaket','=','paket.jenispaket')
+                        ->get();
+    }
+
 	public function getPaketKonsultan($id){
         return PaketModel::select('paket.*', "member.nama","jenispaket.background" )
                     ->join('member','member.id',"=","paket.konsultan")

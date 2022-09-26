@@ -3,37 +3,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {{-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> --}}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-    // google.charts.load('current', {'packages':['corechart']});
-    //   google.charts.setOnLoadCallback(drawChart);
-
-    //   function drawChart() {
-    //     var data = google.visualization.arrayToDataTable([
-    //       ['Bulan', 'Jumlah Penjualan'],
-
-    //     ]);
-
-    //     var options = {
-    //     //   title: 'Laporan Penjualan Paket Tahun {{$tahun}}',
-    //       curveType: 'function',
-    //       legend: { position: 'bottom' }
-    //     };
-
-    //     var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-    //     chart.draw(data, options);
-    //   }
-    // </script>
+    <script src='https://code.jquery.com/jquery-3.5.1.js'></script>
+    <script src='https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js'></script>
+    <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <title>Admin</title>
 </head>
 
 @section("isipage")
-    <h1>Laporan Penjualan Paket</h1>
+    <h1>Laporan Penjualan Produk</h1>
     <input type="hidden" name="temp" value="{{$tahun}}" id="temp">
     <form action="/public/detaillaporan" method="post">
         <div class="bulan" style="font-size: 25px"><span>Bulan :</span>
@@ -60,35 +41,43 @@
         @endforeach
         </select>
     </div>
-    {{-- <div id="curve_chart" style="width: 1250px; height: 500px"></div> --}}
-    {{-- <br><br><br> --}}
 
     <br>
     <h1>Transaksi Bulan <span id="tampilbulan">Januari</span> Tahun <span id="tampiltahun">{{$tahun}}</span></h1><br>
     <div class="tabeldetail">
         <div class="table-responsive" id="sailorTableArea">
             <table id="sailorTable" name="sailorTable" class="table table-striped table-bordered" width="100%">
-                <thead><th>No. Pemesanan</th><th>Konsultan</th><th>Tanggal Pembelian</th><th>Total</th></thead>
+                <thead><th>No. Pemesanan</th><th>Tanggal Pembelian</th><th>Total</th><th>Keuntungan</th></thead>
             </table>
         </div>
     </div>
+    <div><h1>Total Keuntungan : <span id="totkeuntungan">Rp. 0</span></h1></div>
     <br><br><br><br><br><br><br><br><br><br>
 @endsection
 
 <script language='javascript'>
     $(document).ready(function(){
+        $('#sailorTable').DataTable();
         var sekarang = new Date();
-        var tb = "<thead><th>No. Pemesanan</th><th>Konsultan</th><th>Waktu Penjualan</th><th>Total</th><th>Keuntungan</th></thead><tbody>";
+        var tb = "<thead><th>No. Pemesanan</th><th>Tanggal Pembelian</th><th>Total</th><th>Keuntungan</th></thead><tbody>";
         $.ajax({
             type:'get',
-            url:'{!!URL::to('detailbulanproduk')!!}',
-            data:{'tahun':sekarang.getFullYear(), "bulan":sekarang.getMonth()+1},
+            url:`{!!URL::to('detailbulanproduk')!!}/${sekarang.getFullYear()}/${sekarang.getMonth()+1}`,
+            // data:{'tahun':sekarang.getFullYear(), "bulan":sekarang.getMonth()+1},
             success:function(data){
+                var untung = 0;
                 for(var i = 0; i < data.length; i++){
-                    tb+="<tr><td>"+data[i].nopesanan+"</td><td>"+data[i].username+"</td><td>"+data[i].waktubeli+"</td><td>"+data[i].total+"</td><td>0</td>";
+                    untung = untung + (data[i].total*0.02);
+                    var num = numeral(data[i].total).format('0,0');
+                    var fmt = numeral((data[i].total*0.02)).format('0,0');
+                    tb+="<tr><td>#"+data[i].nopesanan+"</td><td>"+data[i].waktubeli+"</td><td>Rp. "+num+"</td><td>Rp. "+fmt+"</td>";
                     tb+="</tr>";
                 }
+                var numfmt = numeral(untung).format('0,0');
                 $("#sailorTable").html(tb);
+                $("#totkeuntungan").html("Rp. " +numfmt);
+                console.log("ini tb : " + tb);
+                console.log("ini data " + data);
             },
             error:function(err){
                 console.log(err);
@@ -96,21 +85,30 @@
         });
         $("#tahuns").on('change', function() {
             var tahun = $("#tahuns").val();
-            var id = $(this).val();
+            var id = $("#bulans").val();
             var bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
             var jum = parseInt(id)-1;
             $('#tampiltahun').html(tahun);
-            var tb = "<thead><th>Nama Paket</th><th>Konsultan</th><th>Tanggal Penjualan</th><th>Total</th><th>Keuntungan</th></thead><tbody>";
+            var tb = "<thead><th>No. Pemesanan</th><th>Tanggal Pembelian</th><th>Total</th><th>Keuntungan</th></thead><tbody>";
             $.ajax({
                 type:'get',
-                url:'{!!URL::to('detailbulanproduk')!!}',
-                data:{'tahun':tahun, "bulan":id},
+                url:`{!!URL::to('detailbulanproduk')!!}/${tahun}/${id}`,
+                // data:{'tahun':sekarang.getFullYear(), "bulan":sekarang.getMonth()+1},
                 success:function(data){
+                    var untung = 0;
                     for(var i = 0; i < data.length; i++){
-                        tb+="<tr><td>"+data[i].nama_paket+"</td><td>"+data[i].username+"</td><td>"+data[i].tanggalselesai+"</td><td>"+data[i].totalharga+"</td><td>0</td>";
+                        untung = untung + (data[i].total*0.02);
+                        var num = numeral(data[i].total).format('0,0');
+                        var fmt = numeral((data[i].total*0.02)).format('0,0');
+                        tb+="<tr><td>#"+data[i].nopesanan+"</td><td>"+data[i].waktubeli+"</td><td>Rp. "+num+"</td><td>Rp. "+fmt+"</td>";
                         tb+="</tr>";
                     }
+                    var numfmt = numeral(untung).format('0,0');
                     $("#sailorTable").html(tb);
+                    $("#totkeuntungan").html("Rp. " +numfmt);
+                    console.log("ini tb : " + tb);
+                    console.log("ini data " + data);
+                    console.log(`{!!URL::to('detailbulanproduk')!!}/${sekarang.getFullYear()}/${sekarang.getMonth()+1}`);
                 },
                 error:function(err){
                     console.log(err);
@@ -123,17 +121,25 @@
             var bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
             var jum = parseInt(id)-1;
             $('#tampilbulan').html(bulan[jum]);
-            var tb = "<thead><th>Nama Paket</th><th>Konsultan</th><th>Tanggal Penjualan</th><th>Total</th><th>Keuntungan</th></thead><tbody>";
+            var tb = "<thead><th>No. Pemesanan</th><th>Tanggal Pembelian</th><th>Total</th><th>Keuntungan</th></thead><tbody>";
             $.ajax({
                 type:'get',
-                url:'{!!URL::to('detailbulanproduk')!!}',
-                data:{'tahun':tahun, "bulan":id},
+                url:`{!!URL::to('detailbulanproduk')!!}/${tahun}/${id}`,
+                // data:{'tahun':sekarang.getFullYear(), "bulan":sekarang.getMonth()+1},
                 success:function(data){
+                    var untung = 0;
                     for(var i = 0; i < data.length; i++){
-                        tb+="<tr><td>"+data[i].nama_paket+"</td><td>"+data[i].username+"</td><td>"+data[i].tanggalselesai+"</td><td>"+data[i].totalharga+"</td><td>0</td>";
+                        untung = untung + (data[i].total*0.02);
+                        var num = numeral(data[i].total).format('0,0');
+                        var fmt = numeral((data[i].total*0.02)).format('0,0');
+                        tb+="<tr><td>#"+data[i].nopesanan+"</td><td>"+data[i].waktubeli+"</td><td>Rp. "+num+"</td><td>Rp. "+fmt+"</td>";
                         tb+="</tr>";
                     }
+                    var numfmt = numeral(untung).format('0,0');
                     $("#sailorTable").html(tb);
+                    $("#totkeuntungan").html("Rp. " +numfmt);
+                    console.log("ini tb : " + tb);
+                    console.log("ini data " + data);
                 },
                 error:function(err){
                     console.log(err);

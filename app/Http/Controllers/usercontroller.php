@@ -14,28 +14,72 @@ use App\MemberModel;
 use App\TokenModel;
 use App\TrackingBeratModel;
 use Mail;
+use Illuminate\Support\Facades\DB;
 
 class usercontroller extends Controller
 {
 
-    public function sendNotification(Request $req)
-    {
-        $member = MemberModel::find($req->id);
-        $tkn = $member->fbkey;
+    public function dailycheckup() {
+        $this->sendNotification(0,"Daily Checkup","Jangan Lupa Kontrol Trainee");
+    }
+
+    public function ingatMakanPagi(){
+        $this->sendNotification(1,"Pengingat Makan Pagi","Jangan Lupa Makan Pagi");
+    }
+
+    public function ingatMakanSiang(){
+        $this->sendNotification(1,"Pengingat Makan Siang","Jangan Lupa Makan Siang");
+    }
+
+    public function ingatMakanMalam(){
+        $this->sendNotification(1,"Pengingat Makan Malam","Jangan Lupa Makan Malam");
+    }
+
+    public function olahraga(){
+        $hsl = $this->sendNotification(1,"Pengingat Olahraga","Jangan Lupa Olahraga");
+
+        return $hsl;
+    }
+
+    public function sendNotification($role, $title, $body){
+
+        // $act = new actors();
+        // $tkn = $act->find($username)->firebaseToken;
+
+        //kalo lebih dari 1 user pake array token kalo cuman 1 orang pake token saja
+
+        $model = new MemberModel();
+        //konsultan
+        if($role == 0){
+            $list = $model->getListKonsultan();
+        }
+        else if($role == 1){
+            $list = $model->getListMember();
+        }
+
         $rtkn = [];
-        array_push($rtkn, $tkn);
-        $ttt = 'AAAAr1-n9y8:APA91bGwcEJ0PciwlrF7p0j9Eiyg2gGe6KwECtipheRRyvzAR_Td048Dz5DpfTekDPgjjGb4lp0ovrjty6mwqVVw4y3cRPdynaSi5wXFefXlNISRPv42VfCitTaUsU_Jg016Qu-2kfWO';
+
+        for($i = 0; $i < count($list); $i++){
+            if($list[$i]->fbkey != "" || $list[$i]->fbkey != null){
+                array_push($rtkn,$list[$i]->fbkey);
+                // $rtkn[$i] = $list[$i]->fbkey;
+            }
+        }
+
+        // $tkn = "";
+        // array_push($rtkn, $tkn);
+        $ttt = "QUFBQXIxLW45eTg6QVBBOTFiR3djRUowUGNpd2xyRjdwMGo5RWl5ZzJnR2U2S3dFQ3RpcGhlUlJ5dnpBUl9UZDA0OER6NURwZlRla0RQZ2pqR2I0bHAwb3ZyanR5Nm13cVZWdzR5M2NSUGR5bmFTaTV3WEZlZlhsTklTUlB2NDJWZkNpdFRhVXNVX0pnMDE2UXUtMmtmV08=";
 
         $data = [
             "registration_ids" => $rtkn,
             "notification" => [
-                "title" => $req->title,
-                "body" => $req->pesan,
+                "title" => $title,
+                "body" => $body,
             ]
         ];
         $dataString = json_encode($data);
         $headers = [
-            'Authorization: key=' . $ttt,
+            'Authorization: key=' . base64_decode($ttt),
             'Content-Type: application/json',
         ];
 
@@ -46,10 +90,10 @@ class usercontroller extends Controller
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-
         $response = curl_exec($ch);
-
-        dd($response);
+        //dd($response);
+        $res['status']=$rtkn;
+        return json_encode($res);
     }
 
 	public function register(Request $request){
@@ -70,7 +114,7 @@ class usercontroller extends Controller
 			$memberBaru->nama = "";
 			$memberBaru->email = $request->email;
 			$memberBaru->nomorhp = $request->nohp;
-			$memberBaru->password = $request->password;
+			$memberBaru->password = md5($request->password);
 			$memberBaru->saldo = 0;
 			$memberBaru->rating = 0;
 			$memberBaru->berat = 0;
@@ -97,13 +141,13 @@ class usercontroller extends Controller
 			$memberBaru->save();
             $chatbaru = new ChatModel;
             $chatbaru->id = 0;
-            $chatbaru->username1 = $request->username;
+            $chatbaru->username1 = $memberBaru->id;
             $chatbaru->username2 = "11";
             $chatbaru->save();
             $chatbaru = new ChatModel;
             $chatbaru->id = 0;
             $chatbaru->username1 = "11";
-            $chatbaru->username2 = $request->username;
+            $chatbaru->username2 = $memberBaru->id;
             $chatbaru->save();
 
 
@@ -162,7 +206,7 @@ class usercontroller extends Controller
         if(count($hsl) > 0){
             $member = new MemberModel();
             $hasil = $member->memberEmail($user);
-            $hasil[0]->password = $pass;
+            $hasil[0]->password = md5($pass);
             $hasil[0]->save();
             $return[0]['pesan'] = "sukses";
         }
@@ -184,7 +228,7 @@ class usercontroller extends Controller
 		$password = $req->password;
 		$return = [];
 		$model = new MemberModel();
-		$hsl = $model->loginUser($username, $password);
+		$hsl = $model->loginUser($username, md5($password));
 
 		if(count($hsl) > 0){
             $hsl[0]->fbkey = $req->token;

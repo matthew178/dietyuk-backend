@@ -3,6 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -10,7 +13,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src='https://code.jquery.com/jquery-3.5.1.js'></script>
     <script src='https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js'></script>
-    <title>Admin</title>
+    <title>Document</title>
 </head>
 
 @section("isipage")
@@ -18,7 +21,7 @@
         <div class="container-fluid">
             <div class="row" id="main" >
                 <div class="col-sm-12 col-md-12 well" id="content">
-                    <h1>Master Paket</h1><br>
+                    <h1>Daftar Pengaduan</h1><br>
                     {{-- <form action="/public/searchPaket" method="post" class="form-inline">
                         @csrf
                         <input type="text" class="form-control" id="cari" name="cari" placeholder="Cari Paket">
@@ -28,45 +31,22 @@
                         <table id="sailorTable" class="table table-striped table-bordered" width="100%">
                             <thead>
                                 <tr>
-                                    <th>Nama Paket</th>
-                                    <th>Rating Paket</th>
+                                    <th>Pelapor</th>
                                     <th>Konsultan</th>
-                                    <th>Status</th>
+                                    <th>Keterangan</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php
-                                    $jum = count($paket);
+                                    $jum = count($data);
                                 @endphp
                                 @for ($i = 0; $i < $jum; $i++)
                                     <tr>
-                                        <td>{{$paket[$i]->nama_paket}}</td>
-                                        <td>{{$paket[$i]->rating}}</td>
-                                        <td>{{$paket[$i]->nama}}</td>
-                                        @if ($paket[$i]->status == 0)
-                                            <td style="color: slategray">Tidak Aktif</td>
-                                        @else
-                                            @if ($paket[$i]->status == 1)
-                                                <td style="color: green">Aktif</td>
-                                            @else
-                                                @if ($paket[$i]->status == 2)
-                                                    <td style="color: red">Block</td>
-                                                @else
-                                                    <td style="color: slategray">Belum Siap</td>
-                                                @endif
-                                            @endif
-                                        @endif
-                                        @if ($paket[$i]->status == 1)
-                                            <td><a href="/public/blockpaket/{{$paket[$i]->id_paket}}"><button type="button" class="btn btn-primary">Block</button></a></td>
-                                        @else
-                                            @if ($paket[$i]->status == 2)
-                                                <td><a href="/public/aktifkanpaket/{{$paket[$i]->id_paket}}"><button type="button" class="btn btn-primary">Aktifkan</button></a></td>
-                                            @else
-                                            <td></td>
-                                            @endif
-                                        @endif
-
+                                        <td>{{$data[$i]->pelapor}}</td>
+                                        <td>{{$data[$i]->konsultan}}</td>
+                                        <td>{{$data[$i]->keterangan}}</td>
+                                        <td><a href="/public/blockkonsultan/{{$data[$i]->id}}"><button type="button" class="btn btn-primary">Block Konsultan</button></a><a href="/public/ubahStatusReport/{{$data[$i]->id}}"><button type="button" class="btn btn-danger">X</button></a></td>
                                     </tr>
                                 @endfor
                             </tbody>
@@ -77,6 +57,8 @@
         </div>
     </div>
 @endsection
+
+</html>
 
 <script language='javascript'>
     $(document).ready(function(){
